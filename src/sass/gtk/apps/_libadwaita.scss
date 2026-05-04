@@ -1,4 +1,3 @@
-
 //
 // avatar
 //
@@ -13,33 +12,51 @@ avatar {
   // need to update the NUMBER_OF_COLORS in src/adw-avatar.c.
   // The 2D list has this form: ((font-color, gradient-top-color, gradient-bottom-color)).
   $avatarcolorlist: (
-   (#cfe1f5, #83b6ec, #337fdc), // blue
-   (#caeaf2, #7ad9f1, #0f9ac8), // cyan
-   (#cef8d8, #8de6b1, #29ae74), // green
-   (#e6f9d7, #b5e98a, #6ab85b), // lime
-   (#f9f4e1, #f8e359, #d29d09), // yellow
-   (#ffead1, #ffcb62, #d68400), // gold
-   (#ffe5c5, #ffa95a, #ed5b00), // orange
-   (#f8d2ce, #f78773, #e62d42), // raspberry
-   (#fac7de, #e973ab, #e33b6a), // magenta
-   (#e7c2e8, #cb78d4, #9945b5), // purple
-   (#d5d2f5, #9e91e8, #7a59ca), // violet
-   (#f2eade, #e3cf9c, #b08952), // beige
-   (#e5d6ca, #be916d, #785336), // brown
-   (#d8d7d3, #c0bfbc, #6e6d71), // gray
+    (#cfe1f5, #83b6ec, #337fdc),
+    // blue
+    (#caeaf2, #7ad9f1, #0f9ac8),
+    // cyan
+    (#cef8d8, #8de6b1, #29ae74),
+    // green
+    (#e6f9d7, #b5e98a, #6ab85b),
+    // lime
+    (#f9f4e1, #f8e359, #d29d09),
+    // yellow
+    (#ffead1, #ffcb62, #d68400),
+    // gold
+    (#ffe5c5, #ffa95a, #ed5b00),
+    // orange
+    (#f8d2ce, #f78773, #e62d42),
+    // raspberry
+    (#fac7de, #e973ab, #e33b6a),
+    // magenta
+    (#e7c2e8, #cb78d4, #9945b5),
+    // purple
+    (#d5d2f5, #9e91e8, #7a59ca),
+    // violet
+    (#f2eade, #e3cf9c, #b08952),
+    // beige
+    (#e5d6ca, #be916d, #785336),
+    // brown
+    (#d8d7d3, #c0bfbc, #6e6d71),
+    // gray
   );
 
-  @for $i from 1 through length($avatarcolorlist) {
-    &.color#{$i} {
-      $avatarcolor: nth($avatarcolorlist, $i);
-      background-image: linear-gradient(nth($avatarcolor, 2), nth($avatarcolor, 3));
-      color: nth($avatarcolor, 1);
-    }
+@for $i from 1 through length($avatarcolorlist) {
+  &.color#{$i} {
+    $avatarcolor: nth($avatarcolorlist, $i);
+    background-image: linear-gradient(nth($avatarcolor, 2), nth($avatarcolor, 3));
+    color: nth($avatarcolor, 1);
   }
+}
 
-  &.contrasted { color: white; }
+&.contrasted {
+  color: white;
+}
 
-  &.image { background: none; }
+&.image {
+  background: none;
+}
 }
 
 //
@@ -63,11 +80,11 @@ video {
 window.about,
 dialog.about {
   .main-page {
-    > viewport > clamp > box {
+    >viewport>clamp>box {
       margin: 12px;
       border-spacing: 6px;
 
-      > box {
+      >box {
         margin-top: 18px;
         border-spacing: 18px;
         margin-bottom: 6px;
@@ -83,12 +100,12 @@ dialog.about {
   }
 
   .subpage {
-    > viewport > clamp > box {
+    >viewport>clamp>box {
       margin: 18px 12px;
       border-spacing: 18px;
     }
 
-    > clamp > textview {
+    >clamp>textview {
       background: none;
       color: inherit;
     }
@@ -99,25 +116,27 @@ dialog.about {
 // preferencespage
 //
 
-preferencespage > scrolledwindow > viewport > clamp > box {
+preferencespage>scrolledwindow>viewport>clamp>box {
   margin: 24px 12px;
   border-spacing: 24px;
 }
 
-preferencesgroup > box {
-  &, .labels {
+preferencesgroup>box {
+
+  &,
+  .labels {
     border-spacing: $container_padding;
   }
 
-  > box.header:not(.single-line) {
+  >box.header:not(.single-line) {
     margin-bottom: $container_padding;
   }
 
-  > box.single-line {
+  >box.single-line {
     min-height: 34px;
   }
 
-  grid > box > switch {
+  grid>box>switch {
     margin: 14px 0;
   }
 }
@@ -127,14 +146,14 @@ preferencesgroup > box {
 //
 
 statuspage {
-  > scrolledwindow > viewport > box {
+  >scrolledwindow>viewport>box {
     margin: 36px $container_padding * 2;
     border-spacing: 36px;
 
-    > clamp > box {
+    >clamp>box {
       border-spacing: $container_padding * 2;
 
-      > .icon {
+      >.icon {
         -gtk-icon-size: 128px;
 
         color: gtkalpha(currentColor, 0.55);
@@ -150,12 +169,12 @@ statuspage {
     }
   }
 
-  &.compact > scrolledwindow > viewport > box {
+  &.compact>scrolledwindow>viewport>box {
     margin: 24px 12px;
     border-spacing: 24px;
 
-    > clamp > box {
-      > .icon {
+    >clamp>box {
+      >.icon {
         -gtk-icon-size: 96px;
 
         &:not(:last-child) {
@@ -163,7 +182,7 @@ statuspage {
         }
       }
 
-      > .title {
+      >.title {
         font-size: 18pt;
       }
     }
@@ -179,14 +198,16 @@ statuspage {
   @at-root %card, & {
     @extend %circular_list;
 
-    .osd &, &.osd {
+    .osd &,
+    &.osd {
       background-color: gtkalpha(currentColor, .1);
       color: inherit;
       box-shadow: none;
     }
   }
 
-  .osd &, &.osd {
+  .osd &,
+  &.osd {
     &:focus:focus-visible {
       outline-color: $fill_color;
     }
@@ -220,12 +241,19 @@ toast {
   outline: 1px solid $highlight_color;
   outline-offset: -1px;
 
-  &:dir(ltr) { padding-left: $container_padding * 2; }
-  &:dir(rtl) { padding-right: $container_padding * 2; }
+  &:dir(ltr) {
+    padding-left: $container_padding * 2;
+  }
 
-  button { @extend %osd_button; }
+  &:dir(rtl) {
+    padding-right: $container_padding * 2;
+  }
 
-  > widget {
+  button {
+    @extend %osd_button;
+  }
+
+  >widget {
     margin: 0 $container_padding;
   }
 }
@@ -244,9 +272,15 @@ viewswitcher {
     margin-bottom: 0;
     min-height: $container_padding;
 
-    > button.toggle {
-      image { -gtk-icon-size: 12px; }
-      label { margin-top: 3px; margin-bottom: -2px; }
+    >button.toggle {
+      image {
+        -gtk-icon-size: 12px;
+      }
+
+      label {
+        margin-top: 3px;
+        margin-bottom: -2px;
+      }
     }
   }
 
@@ -254,12 +288,12 @@ viewswitcher {
     font-weight: normal;
     padding: 0;
 
-    > stack > box {
+    >stack>box {
       &.narrow {
         font-size: 0.75rem;
         padding-top: $container_padding + 2px;
 
-        > label {
+        >label {
           min-height: 18px;
           padding-left: 3px;
           padding-right: 3px;
@@ -275,17 +309,22 @@ viewswitcher {
   }
 }
 
-viewswitcherbar actionbar > revealer > box {
+viewswitcherbar actionbar>revealer>box {
   padding-left: $container_padding;
   padding-right: $container_padding;
   padding-top: $container_padding;
 
-  viewswitcher.narrow > button.toggle {
+  viewswitcher.narrow>button.toggle {
     padding: $container_padding $container_padding * 2;
     border-radius: $bd_radius;
 
-    image { -gtk-icon-size: 16px; }
-    label { margin-top: 6px; }
+    image {
+      -gtk-icon-size: 16px;
+    }
+
+    label {
+      margin-top: 6px;
+    }
   }
 }
 
@@ -312,17 +351,19 @@ viewswitchertitle {
 
 // AdwIndicatorBin
 indicatorbin {
-  > indicator, > mask {
+
+  >indicator,
+  >mask {
     min-width: $container_padding * 2;
     min-height: $container_padding * 2;
     border-radius: $circular_radius;
   }
 
-  > indicator {
+  >indicator {
     margin: 1px;
     background: gtkalpha(currentColor, .4);
 
-    > label {
+    >label {
       font-size: 0.6rem;
       font-weight: normal;
       padding: 1px 4px;
@@ -330,30 +371,33 @@ indicatorbin {
     }
   }
 
-  > mask {
+  >mask {
     padding: 0;
     background: black;
   }
 
-  > image {
+  >image {
     -gtk-icon-size: 16px;
     margin-top: -4px;
     margin-bottom: -4px;
   }
 
-  &.needs-attention > indicator {
+  &.needs-attention>indicator {
     background: $selected_bg_color;
 
-    > label { color: $selected_fg_color; }
+    >label {
+      color: $selected_fg_color;
+    }
   }
 
   &.badge {
-    > indicator,
-    > mask {
+
+    >indicator,
+    >mask {
       min-height: 13px;
     }
 
-    > indicator > label {
+    >indicator>label {
       font-size: 0.6rem;
       font-weight: bold;
       padding-left: 4px;
@@ -361,15 +405,17 @@ indicatorbin {
       color: white;
     }
 
-    &.needs-attention > indicator {
+    &.needs-attention>indicator {
       background: $selected_bg_color;
 
-      > label { color: $selected_fg_color; }
+      >label {
+        color: $selected_fg_color;
+      }
     }
   }
 }
 
-headerbar > windowhandle > box viewswitcher {
+headerbar>windowhandle>box viewswitcher {
   min-height: 0;
   border-spacing: 0;
   border-radius: $circular_radius;
@@ -385,7 +431,7 @@ headerbar > windowhandle > box viewswitcher {
     padding: 0;
   }
 
-  > button.toggle {
+  >button.toggle {
     margin: 0;
     min-height: 0;
     font-weight: 500;
@@ -396,16 +442,20 @@ headerbar > windowhandle > box viewswitcher {
       border-width: 0 0 0 1px;
       border-style: none solid none none;
       border-image: linear-gradient(to bottom,
-                                    transparent 16%,
-                                    $light_borders_color 16%,
-                                    $light_borders_color 84%,
-                                    transparent 84%) 0 0 0 1 / 0 0 0 1px stretch;
+          transparent 16%,
+          $light_borders_color 16%,
+          $light_borders_color 84%,
+          transparent 84%) 0 0 0 1 / 0 0 0 1px stretch;
     }
 
-    &:hover, &:active, &:checked {
+    &:hover,
+    &:active,
+    &:checked {
       border-image: none;
 
-      & + button { border-image: none; }
+      &+button {
+        border-image: none;
+      }
     }
   }
 }
@@ -434,14 +484,16 @@ headerbar > windowhandle > box viewswitcher {
     background-color: $active_color;
   }
 
-  &:checked, &:selected {
+  &:checked,
+  &:selected {
     color: $fg_color;
-    background-color: if($variant == 'light', $bg_color, $visit_color);
+    background-color: if($variant =='light', $bg_color, $visit_color);
     box-shadow: 0 2px 3px rgba(black, 0.08), inset 1px 2px 1px -1px $button_outline, inset -1px -1px 1px -1px $button_highlight;
   }
 }
 
 tabbar {
+
   .start-action,
   .end-action {
     padding: $container_padding;
@@ -476,9 +528,10 @@ tabbar {
   }
 
   &:backdrop .box {
-    > scrolledwindow,
-    > .start-action,
-    > .end-action {
+
+    >scrolledwindow,
+    >.start-action,
+    >.end-action {
       filter: opacity(0.5);
     }
   }
@@ -501,7 +554,7 @@ tabbar {
     min-height: $menuitem_size;
     margin: 0 -3px;
 
-    > separator {
+    >separator {
       margin: $container_padding 0;
       background-color: $borders_color;
 
@@ -510,19 +563,19 @@ tabbar {
       }
     }
 
-    > revealer > indicator {
+    >revealer>indicator {
       min-width: 2px;
       border-radius: 2px;
       background: gtkalpha($selected_bg_color, 0.5);
       margin: 3px 6px;
     }
 
-    > tabboxchild {
+    >tabboxchild {
       margin: 0;
     }
 
-    > tab,
-    > tabboxchild > tab {
+    >tab,
+    >tabboxchild>tab {
       @extend %tabbar_tab;
 
       button.tab-close-button {
@@ -538,7 +591,8 @@ tabbar {
           background-color: gtkalpha(currentColor, 0.1);
         }
 
-        &:active, &:active:hover {
+        &:active,
+        &:active:hover {
           color: $text_color;
           background-color: gtkalpha(currentColor, 0.2);
         }
@@ -588,7 +642,9 @@ toolbarview.undershoot-bottom scrolledwindow {
 }
 
 // Sidebar
-.unfolded stacksidebar.sidebar { border: none; }
+.unfolded stacksidebar.sidebar {
+  border: none;
+}
 
 .sidebar-pane {
   .sidebar-pane {
@@ -603,7 +659,7 @@ toolbarview.undershoot-bottom scrolledwindow {
   .toolbar,
   headerbar,
   .navigation-sidebar,
-  searchbar > revealer > box {
+  searchbar>revealer>box {
     background-color: transparent;
     box-shadow: none;
     border: none;
@@ -621,7 +677,7 @@ toolbarview.undershoot-bottom scrolledwindow {
   .navigation-sidebar:not(.view) {
     padding: $container_padding + 4px;
 
-    > row {
+    >row {
       &:selected {
         background-color: $selected_bg_color;
         color: $selected_fg_color;
@@ -636,10 +692,13 @@ toolbarview.undershoot-bottom scrolledwindow {
   background-image: linear-gradient(to bottom, rgba(black, 0.03), transparent 80%, rgba(white, 0.03));
   color: $dark_sidebar_fg;
   border-radius: $wm_radius - $container_padding;
+  margin: 16px; // <-- Space between the sidebar and window edges
 
-  @if $blur == 'true' or $trans == 'true' {
+  @if $blur =='true' or $trans =='true' {
     background-color: transparent;
-  } @else {
+  }
+
+  @else {
     background-color: gtkalpha($fg_color, if($variant =='light', 0.02, 0.015));
   }
 
@@ -650,7 +709,7 @@ toolbarview.undershoot-bottom scrolledwindow {
     @include transition-shadows($dark_borders_color);
   }
 
-  banner > revealer > widget {
+  banner>revealer>widget {
     background-color: gtkmix($selected_bg_color, $base_color, 30%);
     color: $text_color;
 
@@ -660,59 +719,73 @@ toolbarview.undershoot-bottom scrolledwindow {
   }
 
   &:dir(ltr) {
-    margin: $container_padding 0 $container_padding $container_padding;
+    margin: 10px 0 10px 10px; // <-- Adjust this for LTR sidebar margin
   }
 
   &:dir(rtl) {
-    margin: $container_padding $container_padding $container_padding 0;
+    margin: 10px 10px 10px 0; // <-- Adjust this for RTL sidebar margin
   }
 
   &:dir(ltr) {
-    &, banner > revealer > widget {
+
+    &,
+    banner>revealer>widget {
       box-shadow: 2px 3px 12px rgba(black, 0.1), inset 0 0 0 1px $sidebar_highlight_color;
       border-right: none;
     }
   }
 
   &:dir(rtl) {
-    &, banner > revealer > widget {
+
+    &,
+    banner>revealer>widget {
       box-shadow: -2px 3px 12px rgba(black, 0.1), inset 0 0 0 1px $sidebar_highlight_color;
       border-left: none;
     }
   }
 
-  &.end:dir(rtl), &.end:dir(ltr) {
+  &.end:dir(rtl),
+  &.end:dir(ltr) {
     margin: 0;
     border-radius: 0;
   }
 
   &.end:dir(rtl) {
-    &, banner > revealer > widget {
+
+    &,
+    banner>revealer>widget {
       box-shadow: none;
       border-right: 1px solid $header_border;
     }
   }
 
   &.end:dir(ltr) {
-    &, banner > revealer > widget {
+
+    &,
+    banner>revealer>widget {
       box-shadow: none;
       border-left: 1px solid $header_border;
     }
   }
 
-  @if $trans == 'true' {
+  @if $trans =='true' {
     &:first-child {
+
       &:dir(ltr),
       &.end:dir(rtl) {
-        &, banner > revealer > widget {
+
+        &,
+        banner>revealer>widget {
           box-shadow: 9000px 0 0 9999px $base_color, 2px 3px 12px rgba(black, 0.1), inset 0 0 0 1px $sidebar_highlight_color;
           border-right: none;
         }
       }
-  
+
       &:dir(rtl),
       &.end:dir(ltr) {
-        &, banner > revealer > widget {
+
+        &,
+        banner>revealer>widget {
           box-shadow: -9000px 0 0 9999px $base_color, -2px 3px 12px rgba(black, 0.1), inset 0 0 0 1px $sidebar_highlight_color;
           border-left: none;
         }
@@ -724,15 +797,21 @@ toolbarview.undershoot-bottom scrolledwindow {
     transition: background-color $longer_duration $deceleration_curve;
     @include button(header-backdrop);
 
-    &:dir(ltr), &.end:dir(rtl) {
-      &, banner > revealer > widget {
+    &:dir(ltr),
+    &.end:dir(rtl) {
+
+      &,
+      banner>revealer>widget {
         box-shadow: none;
         border-right: none;
       }
     }
 
-    &:dir(rtl), &.end:dir(ltr) {
-      &, banner > revealer > widget {
+    &:dir(rtl),
+    &.end:dir(ltr) {
+
+      &,
+      banner>revealer>widget {
         box-shadow: none;
         border-left: none;
       }
@@ -741,21 +820,26 @@ toolbarview.undershoot-bottom scrolledwindow {
 }
 
 .content-pane {
-  &, &:backdrop {
+
+  &,
+  &:backdrop {
     background-color: transparent;
   }
 
   toolbarview {
-    &, &.view {
+
+    &,
+    &.view {
       background-color: transparent;
     }
 
-    > stack, > box > stack.view {
+    >stack,
+    >box>stack.view {
       background-color: transparent;
     }
   }
 
-  notebook > stack box > switch {
+  notebook>stack box>switch {
     margin: 14px 0;
   }
 
@@ -767,7 +851,9 @@ toolbarview.undershoot-bottom scrolledwindow {
 .sidebar-pane,
 .content-pane {
   headerbar {
-    &, &:backdrop {
+
+    &,
+    &:backdrop {
       background-color: transparent;
       border: none;
       box-shadow: none;
@@ -777,7 +863,8 @@ toolbarview.undershoot-bottom scrolledwindow {
 
 dialog-host,
 navigation-view-page,
-.sidebar-pane, .content-pane,
+.sidebar-pane,
+.content-pane,
 .content-pane .sidebar-pane,
 .sidebar-pane .content-pane {
   toolbarview.undershoot-top scrolledwindow {
@@ -798,13 +885,23 @@ navigation-view-page,
     }
 
     &.undershoot-start {
-      &:dir(ltr) { @include undershoot(left, $style: 'solid'); }
-      &:dir(rtl) { @include undershoot(right, $style: 'solid'); }
+      &:dir(ltr) {
+        @include undershoot(left, $style: 'solid');
+      }
+
+      &:dir(rtl) {
+        @include undershoot(right, $style: 'solid');
+      }
     }
 
     &.undershoot-end {
-      &:dir(ltr) { @include undershoot(right, $style: 'solid'); }
-      &:dir(rtl) { @include undershoot(left, $style: 'solid'); }
+      &:dir(ltr) {
+        @include undershoot(right, $style: 'solid');
+      }
+
+      &:dir(rtl) {
+        @include undershoot(left, $style: 'solid');
+      }
     }
   }
 }
@@ -814,10 +911,13 @@ navigation-view-page,
 //
 
 toolbarview {
-  > .top-bar,
-  > .bottom-bar {
+
+  >.top-bar,
+  >.bottom-bar {
     headerbar {
-      &, &:backdrop {
+
+      &,
+      &:backdrop {
         background-color: transparent;
         border: none;
         box-shadow: none;
@@ -826,7 +926,7 @@ toolbarview {
 
     searchbar,
     actionbar {
-      > revealer > box {
+      >revealer>box {
         background-color: transparent;
         border: none;
         box-shadow: none;
@@ -844,11 +944,11 @@ toolbarview {
       headerbar {
         min-height: $headerbar_size;
 
-        > windowhandle > box {
+        >windowhandle>box {
           padding-top: $container_padding;
           padding-bottom: $container_padding;
 
-          > widget > box.vertical {
+          >widget>box.vertical {
             margin-top: -$container_padding;
             margin-bottom: -$container_padding;
           }
@@ -857,7 +957,7 @@ toolbarview {
         &.default-decoration {
           min-height: $medium_size;
 
-          > windowhandle > box {
+          >windowhandle>box {
             padding-top: 0;
             padding-bottom: 0;
           }
@@ -866,13 +966,13 @@ toolbarview {
 
       searchbar,
       actionbar {
-        > revealer > box {
+        >revealer>box {
           padding-top: $container_padding;
           padding-bottom: $container_padding;
         }
       }
 
-      .toolbar  {
+      .toolbar {
         padding-top: $container_padding;
         padding-bottom: $container_padding;
       }
@@ -896,12 +996,12 @@ toolbarview {
       }
     }
 
-    &:backdrop > windowhandle {
+    &:backdrop>windowhandle {
       filter: none;
     }
   }
 
-  > .bottom-bar {
+  >.bottom-bar {
     padding: 0;
     border-spacing: 0;
     box-shadow: none;
@@ -913,21 +1013,23 @@ toolbarview {
       color: $disabled_fg_color;
     }
 
-    actionbar { @extend %actionbar-inline; }
+    actionbar {
+      @extend %actionbar-inline;
+    }
   }
 
-  > .top-bar.raised {
+  >.top-bar.raised {
     box-shadow: 0 1px $header_border,
-                0 2px 4px gtkalpha($header_border, 0.35);
+      0 2px 4px gtkalpha($header_border, 0.35);
 
     &.border {
       box-shadow: 0 1px $header_border;
     }
   }
 
-  > .bottom-bar.raised {
+  >.bottom-bar.raised {
     box-shadow: 0 -1px $header_border,
-                0 -2px 4px gtkalpha($header_border, 0.35);
+      0 -2px 4px gtkalpha($header_border, 0.35);
 
     &.border {
       box-shadow: 0 -1px $header_border;
@@ -940,33 +1042,38 @@ toolbarview {
   headerbar {
     min-height: $headerbar_size - $container_padding;
 
-    > windowhandle > box {
+    >windowhandle>box {
       padding: $container_padding / 2;
 
-      &, > widget {
-        > box.start:dir(ltr),
-        > box.end:dir(rtl) {
+      &,
+      >widget {
+
+        >box.start:dir(ltr),
+        >box.end:dir(rtl) {
           margin-right: 0;
         }
-  
-        > box.start:dir(rtl),
-        > box.end:dir(ltr) {
+
+        >box.start:dir(rtl),
+        >box.end:dir(ltr) {
           margin-left: 0;
         }
       }
     }
 
-    button { @extend %headerbar_buttons_flat; }
+    button {
+      @extend %headerbar_buttons_flat;
+    }
 
     windowcontrols {
       &:not(.empty) {
+
         &.start:dir(ltr),
         &.end:dir(rtl) {
           margin-right: 0;
           padding-left: $container_padding + 2px;
           padding-right: 0;
         }
-  
+
         &.start:dir(rtl),
         &.end:dir(ltr) {
           margin-left: 0;
@@ -976,7 +1083,10 @@ toolbarview {
       }
 
       button {
-        &.close, &.maximize, &.minimize {
+
+        &.close,
+        &.maximize,
+        &.minimize {
           margin: 0 1px;
         }
       }
@@ -984,16 +1094,16 @@ toolbarview {
   }
 
   toolbarview {
-    > .top-bar {
+    >.top-bar {
       .collapse-spacing {
         headerbar {
           min-height: $headerbar_size - $container_padding;
 
-          > windowhandle > box {
+          >windowhandle>box {
             padding-top: $container_padding / 2;
             padding-bottom: $container_padding / 2;
 
-            > widget > box.vertical {
+            >widget>box.vertical {
               margin-top: -$container_padding / 2;
               margin-bottom: -$container_padding / 2;
             }
@@ -1013,18 +1123,18 @@ toolbarview {
 //
 
 floating-sheet {
-  > dimming {
+  >dimming {
     background-color: rgba(black, 0.35);
   }
 
-  > sheet {
+  >sheet {
     border-radius: $wm_radius;
     outline: 1px solid $highlight_color;
     outline-offset: -1px;
     box-shadow: 0 3px 6px $wm_shadow,
-                0 7px 12px $wm_shadow,
-                0 12px 20px $wm_shadow,
-                $wm_outline;
+      0 7px 12px $wm_shadow,
+      0 12px 20px $wm_shadow,
+      $wm_outline;
 
     &.background {
       background-color: $dialog_bg_color;
@@ -1033,14 +1143,14 @@ floating-sheet {
 }
 
 bottom-sheet {
-  > sheet {
+  >sheet {
     border-radius: $wm_radius $wm_radius 0 0;
 
     &.background {
       background-color: $dialog_bg_color;
     }
 
-    > outline {
+    >outline {
       border-radius: $wm_radius $wm_radius 0 0;
       box-shadow: $wm_outline;
       border: 1px solid $highlight_color;
@@ -1054,15 +1164,17 @@ dialog.bottom-sheet {
     margin-left: 30px;
     margin-right: 30px;
 
-    &.flush-left, &.flush-right, &.flush-left.flush-right {
-      > outline {
+    &.flush-left,
+    &.flush-right,
+    &.flush-left.flush-right {
+      >outline {
         box-shadow: $wm_outline;
       }
     }
   }
 }
 
-dialog-host > dialog.background {
+dialog-host>dialog.background {
   background: none;
 
   sheet {
@@ -1071,7 +1183,7 @@ dialog-host > dialog.background {
   }
 }
 
-dialog-host > dialog.view {
+dialog-host>dialog.view {
   background: none;
 
   sheet {
@@ -1079,7 +1191,7 @@ dialog-host > dialog.view {
   }
 }
 
-dialog-host > dialog.osd:not(progressbar):not(button):not(menubutton):not(splitbutton) {
+dialog-host>dialog.osd:not(progressbar):not(button):not(menubutton):not(splitbutton) {
   background: none;
 
   sheet {
@@ -1088,8 +1200,10 @@ dialog-host > dialog.osd:not(progressbar):not(button):not(menubutton):not(splitb
 }
 
 // ThemeSelector
-themeselector, // Gnome text editor
-panelthemeselector { // Gnome builder
+themeselector,
+// Gnome text editor
+panelthemeselector {
+  // Gnome builder
   margin: 9px;
 
   checkbutton {
@@ -1129,7 +1243,9 @@ panelthemeselector { // Gnome builder
       transform: translate(27px, 14px);
       padding: 3px;
 
-      &:hover, &:active, &:checked {
+      &:hover,
+      &:active,
+      &:checked {
         background-color: transparent;
       }
 
@@ -1138,7 +1254,9 @@ panelthemeselector { // Gnome builder
         color: white;
         background-color: $primary_color;
 
-        &, &:hover, &:active {
+        &,
+        &:hover,
+        &:active {
           box-shadow: 0 2px 3px -1px rgba(black, 0.08), 0 1px 2px 0 rgba(black, 0.1);
         }
       }
@@ -1146,7 +1264,8 @@ panelthemeselector { // Gnome builder
   }
 }
 
-themeswitcher { // Gnome console
+themeswitcher {
+  // Gnome console
   padding: 6px;
 
   .check {
@@ -1159,7 +1278,9 @@ themeswitcher { // Gnome console
     color: white;
     background-color: $primary_color;
 
-    &, &:hover, &:active {
+    &,
+    &:hover,
+    &:active {
       box-shadow: 0 2px 3px -1px rgba(black, 0.08), 0 1px 2px 0 rgba(black, 0.1);
     }
   }
@@ -1178,7 +1299,13 @@ themeswitcher { // Gnome console
     }
 
     radio {
-      &, &:hover, &:active, &:checked, &:checked:hover, &:checked:active {
+
+      &,
+      &:hover,
+      &:active,
+      &:checked,
+      &:checked:hover,
+      &:checked:active {
         background-color: transparent;
         border: none;
         background: none;

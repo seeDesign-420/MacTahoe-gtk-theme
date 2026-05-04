@@ -34,15 +34,37 @@
   }
 }
 
+.nautilus-window headerbar,
+#NautilusFileChooser headerbar {
+  padding-top: 5px;
+  /* Adjust this value to your liking */
+}
+
 .nautilus-window,
 #NautilusFileChooser {
-  headerbar > windowhandle > box {
+  headerbar>windowhandle>box {
 
-    > widget > box.start > stack > widget > box,
-    > widget > box.start > box > stack > widget > box {
-      margin-left: $container_padding * 2;
-      padding: $container_padding / 2;
+    // Navigation buttons container — multiple selectors for
+    // compatibility across Nautilus versions (GNOME 46-50+)
+    >widget>box.start>stack>widget>box,
+    >widget>box.start>box>stack>widget>box,
+    // GNOME 50.1 actual path (verified via GTK Inspector):
+    // headerbar > windowhandle > box > widget > box.start > stack > box > widget > box
+    >widget>box.start>stack>box>widget>box,
+    // Broad descendant fallbacks for GNOME 50+
+    >widget>box.start stack box,
+    >box.start stack box,
+    >box.start .linked,
+    >box.start>stack>widget>box,
+    >box.start>box>stack>widget>box,
+    >box.start>stack>box,
+    >widget>box.start>box {
+      margin: 4px 4px 4px 30px;
+      margin-top: auto;
+      margin-bottom: auto;
       border-radius: $circular_radius;
+      min-height: 40px;
+      min-width: 80px;
       background-image: $header_button_image;
       box-shadow: $button_shadow;
       background-image: $header_button_image, image($borders_color);
@@ -57,11 +79,44 @@
         background-size: 1px 18px;
       }
 
-      > button {
-        min-height: 24px;
-        min-width: 24px;
-        padding: $container_padding / 2;
+      >button {
+        min-height: 26px;
+        min-width: 26px;
+        padding: 4px;
         @extend %headerbar_buttons_flat;
+      }
+    }
+
+    // Standalone headerbar buttons (search toggle) — match nav/pathbar height
+    // The button has NO CSS ID; target by class path from Inspector:
+    // headerbar > windowhandle > box > ... > stack > stack > button.image-button.toggle > image
+    stack>button.image-button.toggle {
+      margin: 0px 5px 0px 0px;
+      padding: 4px;
+      min-height: 34px;
+      min-width: 34px;
+      border-radius: $circular_radius;
+      background-image: $header_button_image;
+      box-shadow: $button_shadow;
+      background-image: $header_button_image, image($borders_color);
+      background-size: auto, 1px 18px;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    // Right-side buttons (search, view split button) — match nav/pathbar height
+    splitbutton {
+      margin: 0px 40px 0px 0px;
+      margin-top: auto;
+      margin-bottom: auto;
+      min-height: 36px;
+      min-width: 80px;
+      border-spacing: 4px;
+
+      >button,
+      >menubutton>button {
+        min-height: 26px;
+        padding: 4px;
       }
     }
   }
@@ -108,15 +163,15 @@
       margin: 0;
       border-spacing: $container_padding / 2;
 
-      > row.activatable {
+      >row.activatable {
         padding: 0;
         margin: 0;
         @extend %nautilus_view;
 
-        > cell {
+        >cell {
           padding: 0;
 
-          > widget#NautilusViewCell {
+          >widget#NautilusViewCell {
             padding: $container_padding / 2 $container_padding * 1.5;
           }
         }
@@ -132,7 +187,9 @@
 
     &:dir(ltr),
     &.end:dir(rtl) {
-      &, banner > revealer > widget {
+
+      &,
+      banner>revealer>widget {
         box-shadow:
           0 0 0 $container_padding $base_color,
           0 32px 0 $container_padding $base_color,
@@ -144,7 +201,9 @@
 
     &:dir(rtl),
     &.end:dir(ltr) {
-      &, banner > revealer > widget {
+
+      &,
+      banner>revealer>widget {
         box-shadow:
           0 0 0 $container_padding $base_color,
           0 32px 0 $container_padding $base_color,
@@ -158,14 +217,18 @@
 
       &:dir(ltr),
       &.end:dir(rtl) {
-        &, banner > revealer > widget {
+
+        &,
+        banner>revealer>widget {
           box-shadow: none;
         }
       }
 
       &:dir(rtl),
       &.end:dir(ltr) {
-        &, banner > revealer > widget {
+
+        &,
+        banner>revealer>widget {
           box-shadow: none;
         }
       }
@@ -175,7 +238,7 @@
       background: none;
 
       .navigation-sidebar:not(.view) {
-        > row {
+        >row {
           &:selected {
             background-color: $sidebar_theme_color;
             color: $selected_bg_color;
@@ -184,7 +247,7 @@
       }
     }
 
-    > separator.horizontal {
+    >separator.horizontal {
       background-color: $header_border;
     }
   }
@@ -201,7 +264,7 @@
 // Floating Bar
 .floating-bar {
   padding: $container_padding / 2;
-  min-height: 24px;
+  min-height: 34px;
   background-color: $selected_bg_color;
   color: $selected_fg_color;
   border-radius: $circular_radius;
@@ -210,10 +273,10 @@
     $shadow_5,
     inset 0 0 0 1px $highlight_color;
 
-  > button.circular.flat {
+  >button.circular.flat {
     border-radius: $circular_radius;
-    min-height: 24px;
-    min-width: 24px;
+    min-height: 34px;
+    min-width: 34px;
     padding: 0;
     @extend %selected-button;
   }
@@ -223,23 +286,23 @@
   // search entry
   padding-right: $container_padding / 2;
 
-  > image,
-  > box,
-  > text {
+  >image,
+  >box,
+  >text {
     margin: 0;
   }
 
   #NautilusQueryEditorTag {
     @extend .entry-tag;
 
-    > button {
+    >button {
       margin: 0;
     }
   }
 
-  > menubutton > button {
-    min-width: 24px;
-    min-height: 24px;
+  >menubutton>button {
+    min-width: 34px;
+    min-height: 34px;
     margin: 0;
     padding: $container_padding / 2;
     border-radius: $circular_radius;
@@ -247,23 +310,111 @@
   }
 }
 
-#NautilusPathBar {
+// Nautilus location entry — pill shape with smooth GWfox-T-style focus ring
+// Must override .linked > entry rules that strip border-radius to 0/6px
+.nautilus-window headerbar entry,
+.nautilus-window headerbar .linked>entry,
+.nautilus-window headerbar .linked>entry:first-child,
+.nautilus-window headerbar .linked>entry:last-child,
+.nautilus-window headerbar .linked>entry:only-child,
+#NautilusFileChooser headerbar entry,
+#NautilusFileChooser headerbar .linked>entry {
+  border-top-left-radius: $circular_radius;
+  border-top-right-radius: $circular_radius;
+  border-bottom-left-radius: $circular_radius;
+  border-bottom-right-radius: $circular_radius;
+  background-color: gtkalpha($header_fg, 0.08);
+  background-image: none;
+  outline: 2px solid transparent;
+  outline-offset: 0px;
+  box-shadow: none;
+  border-right-style: solid;
+  transition: outline-color 200ms ease, outline-offset 200ms ease, background-color 200ms ease;
+
+  &:hover {
+    background-color: gtkalpha($header_fg, 0.12);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  &:focus,
+  &:focus-within {
+    background-color: $entry_bg;
+    background-image: none;
+    outline-color: gtkalpha($entry_highlight, 0.65);
+    outline-offset: 0px;
+    box-shadow: none;
+  }
+
+  &:backdrop {
+    background-color: gtkalpha($header_fg, 0.05);
+    background-image: none;
+    outline-color: transparent;
+    box-shadow: none;
+  }
+}
+
+// Close button (×) adjacent to the location entry — strip background
+.nautilus-window headerbar .linked>button,
+.nautilus-window headerbar entry+button,
+#NautilusFileChooser headerbar .linked>button,
+#NautilusFileChooser headerbar entry+button {
+  background: none;
+  background-image: none;
+  box-shadow: none;
+  border: none;
+
+  &:hover {
+    background-color: gtkalpha($header_fg, 0.1);
+  }
+
+  &:active {
+    background-color: gtkalpha($header_fg, 0.15);
+  }
+}
+
+#NautilusPathBar,
+.nautilus-window .path-bar,
+nautiluspathbar,
+.nautilus-pathbar {
   border-radius: $circular_radius;
-  margin: 0;
-  padding: $container_padding / 2;
+  margin: 0px 10px 0px 0px;
+  padding: 0;
   @include button(header-normal);
 
   &:backdrop {
     @include button(header-backdrop);
   }
 
-  #NautilusPathButton {
-    margin: 0;
+  #NautilusPathButton,
+  button {
+    margin0: 10px;
     border-radius: $circular_radius;
-    min-height: 24px;
-    padding: $container_padding / 2 $container_padding;
-    @extend %headerbar_buttons_flat;
+    min-height: 36px;
+    padding: 0 $container_padding;
+    background: none;
+    box-shadow: none;
+    border-color: transparent;
+    color: inherit;
 
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+    }
+
+    &:active {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    &:checked:not(:hover),
+    &.toggle:not(:hover) {
+      background: none;
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    &:checked,
     &.current-dir {
       color: $header_fg;
 
@@ -275,27 +426,48 @@
     }
   }
 
-  > menubutton {
+  // The "..." overflow menu button (menubutton.flat.popup > button.toggle)
+  menubutton,
+  splitbutton {
     margin: 0;
+    background: none;
+    box-shadow: none;
+    border-color: transparent;
 
-    > button {
-      min-height: 24px;
-      min-width: 24px;
+    >button,
+    >button.toggle {
+      min-height: 34px;
+      min-width: 34px;
       padding: $container_padding / 2;
       border-radius: $circular_radius;
-      @extend %headerbar_buttons_flat;
+      background: none;
+      box-shadow: none;
+      border-color: transparent;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      &:active,
+      &:checked {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      &:checked:not(:hover) {
+        background: none;
+      }
     }
   }
 }
 
 #NautilusFileChooser {
-  multi-layout-view > box {
+  multi-layout-view>box {
     padding-left: $container_padding * 2;
   }
 }
 
-navigation-view-page > toolbarview > scrolledwindow > viewport > clamp {
-  > box > box > stack > button {
+navigation-view-page>toolbarview>scrolledwindow>viewport>clamp {
+  >box>box>stack>button {
     margin-top: $container_padding * 2;
   }
 }
@@ -316,48 +488,48 @@ popover.background.entry-completion {
 
 window.background.csd {
 
-  > contents,
-  > widget {
+  >contents,
+  >widget {
 
     // 44.0
-    > leaflet.unfolded > box {
-      > headerbar {
+    >leaflet.unfolded>box {
+      >headerbar {
         @extend %side_headerbar_left;
       }
 
-      > searchbar {
+      >searchbar {
         @extend %side_searchbar;
       }
 
-      > stack > widget > box > widget > headerbar,
-      > stack > widget > overlay > leaflet.folded > box > headerbar {
+      >stack>widget>box>widget>headerbar,
+      >stack>widget>overlay>leaflet.folded>box>headerbar {
         @extend %side_headerbar_right;
       }
 
-      > scrolledwindow > viewport > widget > stack {
-        > list.navigation-sidebar {
+      >scrolledwindow>viewport>widget>stack {
+        >list.navigation-sidebar {
           background-color: $dark_sidebar_bg;
 
-          > separator {
+          >separator {
             background-color: transparent;
             margin: 0;
             min-height: 0;
           }
         }
 
-        > box > list.navigation-sidebar {
+        >box>list.navigation-sidebar {
           background-color: $dark_sidebar_bg;
         }
       }
 
-      > stack.background {
+      >stack.background {
         background-color: $base_color;
       }
     }
   }
 }
 
-preferencesgroup > box {
+preferencesgroup>box {
   button.background-preview-button {
     padding: $container_padding / 2;
     outline: 2px solid transparent;
@@ -386,7 +558,7 @@ preferencesgroup > box {
     }
   }
 
-  flowbox.background-flowbox > flowboxchild {
+  flowbox.background-flowbox>flowboxchild {
     outline: 2px solid transparent;
     outline-offset: 0;
     border-radius: $bt_radius + 3px;
@@ -412,10 +584,12 @@ preferencesgroup > box {
 }
 
 @if $gnome_version =="new" {
-  preferencesgroup button.accent, // GDM Setting
+
+  preferencesgroup button.accent,
+  // GDM Setting
   preferencesgroup button.accent-button {
-    min-height: 24px;
-    min-width: 24px;
+    min-height: 34px;
+    min-width: 34px;
     padding: $base_padding / 2;
     border-radius: $circular_radius;
     background: var(--accent-bg-color);
@@ -430,7 +604,8 @@ preferencesgroup > box {
       background-clip: content-box;
     }
 
-    &:checked, &:checked:hover {
+    &:checked,
+    &:checked:hover {
       box-shadow: 0 0 0 3px var(--accent-bg-color);
       background: var(--accent-bg-color);
       background-clip: content-box;
@@ -492,14 +667,14 @@ preferencesgroup > box {
 
 window.background {
 
-  > contents > toastoverlay > leaflet,
-  > widget > toastoverlay > leaflet {
+  >contents>toastoverlay>leaflet,
+  >widget>toastoverlay>leaflet {
 
     // 44.0
-    > box {
+    >box {
       background-color: $base_color;
 
-      > headerbar {
+      >headerbar {
 
         &,
         &:backdrop {
@@ -508,25 +683,25 @@ window.background {
         }
       }
 
-      + separator {
+      +separator {
         @extend %side_separator;
 
-        + box {
+        +box {
           background-color: $dark_sidebar_bg;
         }
       }
 
-      > .view,
+      >.view,
       list:not(.boxed-list) {
         background-color: transparent;
       }
 
-      list > row textview {
+      list>row textview {
         padding: $container_padding;
         border-left: 1px solid $borders_color;
 
         &,
-        & > text {
+        &>text {
           background: none;
         }
       }
@@ -536,10 +711,10 @@ window.background {
   &.maximized,
   &.tiled {
 
-    > contents > toastoverlay > leaflet,
-    > widget > toastoverlay > leaflet {
-      > box {
-        > headerbar {
+    >contents>toastoverlay>leaflet,
+    >widget>toastoverlay>leaflet {
+      >box {
+        >headerbar {
 
           &,
           &:backdrop {
@@ -568,7 +743,7 @@ datechooser {
     }
   }
 
-  navigator > button.flat {
+  navigator>button.flat {
     padding: 0;
     min-height: $menuitem_size;
     min-width: $menuitem_size;
@@ -582,7 +757,7 @@ agenda-view list.background {
 menubutton.flat.popup.sources-button {
   margin: 0;
 
-  > button {
+  >button {
     margin: 0;
     border-radius: 0;
     padding: 0 $container_padding * 2;
@@ -605,7 +780,7 @@ menubutton.flat.popup.sources-button {
 
 // Contacts
 .contacts-editor-address {
-  > entry.flat {
+  >entry.flat {
     &:not(:last-child) {
       box-shadow: inset 0 -1px $borders_color;
     }
@@ -629,7 +804,9 @@ menubutton.flat.popup.sources-button {
 }
 
 .card {
-  &.display-container, &.bit-panel {
+
+  &.display-container,
+  &.bit-panel {
     border: 1px solid $borders_color;
   }
 
@@ -640,7 +817,8 @@ menubutton.flat.popup.sources-button {
   &.bit-panel {
     padding: $container_padding 0;
 
-    button, button.flat,
+    button,
+    button.flat,
     button.text-button {
       min-width: 14px;
       min-height: 12px;
@@ -660,7 +838,7 @@ menubutton.flat.popup.sources-button {
     border-width: 1px 0;
   }
 
-  + widget > stack {
+  +widget>stack {
     border-top: 1px solid $borders_color;
   }
 }
@@ -673,8 +851,8 @@ menubutton.flat.popup.sources-button {
 
   button,
   button.text-button,
-  menubutton > button,
-  menubutton > button.text-button {
+  menubutton>button,
+  menubutton>button.text-button {
     min-width: 16px;
     padding: 2px 4px;
   }
@@ -733,7 +911,7 @@ $weather_forecast_color: #ae7b03;
 }
 
 #daily-forecast-box {
-  > separator:last-child {
+  >separator:last-child {
     background-color: transparent;
     min-width: 0;
   }
@@ -761,12 +939,12 @@ WeatherThermometer {
   margin-bottom: $container_padding * 2;
 }
 
-WeatherThermometer > label.high {
+WeatherThermometer>label.high {
   font-weight: bold;
   color: $weather_thermometer_high_color;
 }
 
-WeatherThermometer > label.low {
+WeatherThermometer>label.low {
   font-weight: bold;
   color: $weather_thermometer_low_color;
 }
@@ -774,7 +952,7 @@ WeatherThermometer > label.low {
 .forecast-button {
   margin: 0 $container_padding * 2;
 
-  > button.image-button {
+  >button.image-button {
     min-height: 28px;
     min-width: 28px;
     padding: 0;
@@ -786,7 +964,7 @@ WeatherThermometer > label.low {
   margin: $container_padding * 3;
 }
 
-button.osd.circular > image {
+button.osd.circular>image {
   padding: 0;
 }
 
@@ -868,7 +1046,7 @@ screenshot-carousel button,
   color: $warning_color;
 }
 
-.origin-button > button {
+.origin-button>button {
   padding: $container_padding / 2 $container_padding * 1.5;
 }
 
@@ -883,7 +1061,7 @@ flowboxchild.card:not(.category-tile) {
   padding: $container_padding * 3.5;
   border: none;
   border-radius: $bt_radius;
-  min-width: 140px;
+  min-width: 134px;
   font-weight: 900;
   font-size: larger;
 
@@ -1068,7 +1246,7 @@ clamp.large .category-tile:not(.category-tile-iconless) {
   background-position: 100% bottom;
 }
 
-.review-row > * {
+.review-row>* {
   margin: $container_padding * 2;
 }
 
@@ -1087,8 +1265,8 @@ clamp.large .category-tile:not(.category-tile-iconless) {
 
 .review-row .vote-buttons button:hover,
 .review-row .vote-buttons button:active,
-.review-row .vote-buttons button:hover + button,
-.review-row .vote-buttons button:active + button {
+.review-row .vote-buttons button:hover+button,
+.review-row .vote-buttons button:active+button {
   border-image: none;
 }
 
@@ -1171,20 +1349,20 @@ star-image {
   padding-right: $container_padding * 2 + 4px;
 }
 
-scrolledwindow.list-page > viewport > clamp > box {
+scrolledwindow.list-page>viewport>clamp>box {
   margin: $container_padding * 4 $container_padding * 2;
   border-spacing: $container_padding * 4;
 }
 
-.update-preferences preferencesgroup > box > box {
+.update-preferences preferencesgroup>box>box {
   margin-top: $container_padding * 3;
 }
 
-.section > label:not(:first-child) {
+.section>label:not(:first-child) {
   margin-top: $container_padding;
 }
 
-.section > box:not(:first-child) {
+.section>box:not(:first-child) {
   margin-top: $container_padding * 2;
 }
 
@@ -1247,7 +1425,7 @@ app-context-bar {
     border-top: none;
   }
 
-  > box:not(:first-child) > button.flat {
+  >box:not(:first-child)>button.flat {
     border-radius: 0;
 
     &:last-child {
@@ -1255,7 +1433,7 @@ app-context-bar {
     }
   }
 
-  > box:first-child > button.flat {
+  >box:first-child>button.flat {
     border-radius: 0;
 
     &:first-child {
@@ -1263,7 +1441,7 @@ app-context-bar {
     }
   }
 
-  > box > button.flat {
+  >box>button.flat {
     border-left-color: $borders_color;
   }
 }
@@ -1282,11 +1460,11 @@ carousel.card {
   border-radius: $circular_radius;
 
   &.large {
-    font-size: 24px;
+    font-size: 34px;
     padding: 16px;
-    min-width: 24px;
+    min-width: 34px;
     /* 60px minus the left and right padding */
-    min-height: 24px;
+    min-height: 34px;
     /* 60px minus the top and bottom padding */
   }
 
@@ -1352,19 +1530,19 @@ window.narrow .app-developer {
   font-feature-settings: "tnum";
 }
 
-scrolledwindow.fake-adw-status-page > viewport > box {
+scrolledwindow.fake-adw-status-page>viewport>box {
   margin: $container_padding * 6 $container_padding * 2;
 }
 
-scrolledwindow.fake-adw-status-page > viewport > box > clamp:not(:last-child) > box {
+scrolledwindow.fake-adw-status-page>viewport>box>clamp:not(:last-child)>box {
   margin-bottom: $container_padding * 6;
 }
 
-scrolledwindow.fake-adw-status-page > viewport > box > clamp > box > .icon:not(:last-child) {
+scrolledwindow.fake-adw-status-page>viewport>box>clamp>box>.icon:not(:last-child) {
   margin-bottom: $container_padding * 6;
 }
 
-scrolledwindow.fake-adw-status-page > viewport > box > clamp > box > .title:not(:last-child) {
+scrolledwindow.fake-adw-status-page>viewport>box>clamp>box>.title:not(:last-child) {
   margin-bottom: $container_padding * 2;
 }
 
@@ -1379,16 +1557,16 @@ window.info scrollbar.vertical trough {
 }
 
 // GsAppRow
-row.app > box.header {
+row.app>box.header {
   margin-left: $container_padding * 2;
   margin-right: $container_padding * 2;
 }
 
-row.app > box.header {
+row.app>box.header {
   border-spacing: $container_padding * 2;
 }
 
-row.app > box.header > image {
+row.app>box.header>image {
   margin-top: $container_padding * 2;
   margin-bottom: $container_padding * 2;
 }
@@ -1430,20 +1608,20 @@ spinner.fade-in:checked {
 //
 
 window.background.csd {
-  > dialog-host > widget > widget > box > leaflet {
-    > headerbar.titlebar.tweak-titlebar-left {
+  >dialog-host>widget>widget>box>leaflet {
+    >headerbar.titlebar.tweak-titlebar-left {
       @extend %side_headerbar_left;
     }
 
-    > headerbar.titlebar.tweak-titlebar-right {
+    >headerbar.titlebar.tweak-titlebar-right {
       @extend %side_headerbar_right;
     }
 
-    > separator {
+    >separator {
       @extend %side_separator;
     }
 
-    > box > searchbar {
+    >box>searchbar {
       @extend %side_searchbar;
     }
 
@@ -1463,14 +1641,14 @@ window.background.csd {
 
 popover.background.global-search {
 
-  > arrow,
-  > contents {
+  >arrow,
+  >contents {
     padding: 0;
   }
 }
 
 popover.background.pages-popover {
-  listview > row {
+  listview>row {
     padding: $base_padding;
 
     button {
@@ -1512,7 +1690,7 @@ panelframeswitcher:not(.vertical) {
     border: none;
   }
 
-  > button.toggle.image-button {
+  >button.toggle.image-button {
     border: none;
     min-height: $menuitem_size - $container_padding;
     padding: $container_padding - 4px $container_padding;
@@ -1520,9 +1698,9 @@ panelframeswitcher:not(.vertical) {
 }
 
 panelframeswitcher.frameheader.header.vertical {
-  > button.toggle.image-button {
-    min-height: 24px;
-    min-width: 24px;
+  >button.toggle.image-button {
+    min-height: 34px;
+    min-width: 34px;
     padding: $base_padding;
   }
 }
@@ -1530,8 +1708,8 @@ panelframeswitcher.frameheader.header.vertical {
 panelstatusbar {
   box-shadow: inset 0 1px $borders_color;
 
-  > menubutton > button,
-  > paneltogglebutton button {
+  >menubutton>button,
+  >paneltogglebutton button {
     border-radius: 0;
     @extend %flat_button;
   }
@@ -1567,7 +1745,7 @@ panelwidget entry.statusbar {
       box-shadow: none;
     }
 
-    > stylevariantpreview > .wallpaper {
+    >stylevariantpreview>.wallpaper {
       border-radius: $bt_radius;
       outline-color: transparent;
       outline-width: 3px;
@@ -1576,15 +1754,15 @@ panelwidget entry.statusbar {
       box-shadow: none;
     }
 
-    &:hover > stylevariantpreview > .wallpaper {
+    &:hover>stylevariantpreview>.wallpaper {
       outline-color: gtkalpha(currentColor, 0.05);
     }
 
-    &:active > stylevariantpreview > .wallpaper {
+    &:active>stylevariantpreview>.wallpaper {
       outline-color: gtkalpha(currentColor, 0.15);
     }
 
-    &:checked > stylevariantpreview > .wallpaper {
+    &:checked>stylevariantpreview>.wallpaper {
       outline-color: $primary_color;
     }
   }
@@ -1598,7 +1776,7 @@ popover.details-popover {
   .actions {
     border-spacing: $container_padding;
 
-    > button {
+    >button {
       padding: 8px;
     }
   }
@@ -1609,7 +1787,7 @@ popover.details-popover {
 //
 
 window.shortcuts {
-  headerbar > windowhandle {
+  headerbar>windowhandle {
     padding: 0;
   }
 }
@@ -1646,11 +1824,11 @@ window.nightthemeswitcher headerbar {
 // Pamac manager
 //
 
-dialog-host > widget > widget > toolbarview {
-  > box > entry.search {
+dialog-host>widget>widget>toolbarview {
+  >box>entry.search {
     margin: $base_padding * 2 0;
 
-    + toastoverlay > stack {
+    +toastoverlay>stack {
       border-top: 1px solid $header_border;
     }
   }
@@ -1804,7 +1982,11 @@ window.background.chromium {
 }
 
 .colorsetter {
-  &, &:hover, &:focus, &:active {
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
     background-color: gtkcolor(colorsetter_color);
     color: gtkcolor(colorsetter_fg_color);
   }
