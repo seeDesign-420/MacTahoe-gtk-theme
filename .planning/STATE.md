@@ -5,9 +5,10 @@
 
 ## Active Tasks
 - [ ] Implement 100% transparent GNOME Shell variant (`.planning/todos/gnome-shell/transparent-variant.md`)
+- [ ] Fix font icon anti-aliasing (`.planning/todos/gtk/fix-icon-antialiasing.md`)
 
 ## Recently Completed
 - [x] Refresh codebase mapping (2026-05-04)
 
 ## Summary
-The project has been mapped and technical debt has been identified. A new feature request for a 100% transparent GNOME Shell variant has been captured and is ready for planning/execution.
+The project has been mapped and technical debt has been identified. New tasks for a transparent GNOME Shell variant and font icon anti-aliasing fixes have been captured.
