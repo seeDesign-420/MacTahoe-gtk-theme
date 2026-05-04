@@ -1,72 +1,80 @@
 # Technology Stack
 
-**Analysis Date:** 2025-02-12
+**Analysis Date:** 2026-05-24
 
 ## Languages
 
 **Primary:**
-- **Bash:** 4.0+ - Used for all installation, configuration, and build scripts (`install.sh`, `tweaks.sh`, `parse-sass.sh`, `make-release.sh`).
-- **SCSS/SASS:** Used for theme styling across different desktop environments and GTK versions (`src/sass/`, `other/gdm/gnome-shell-sass/`).
+- SCSS - Theme styling logic and variables, located in `src/sass/`
+- Bash - Installation, build, and maintenance scripts (`install.sh`, `libs/*.sh`, `src/assets/*.sh`)
 
 **Secondary:**
-- **CSS:** Generated from SCSS, used for final theme files and application-specific styles (Firefox, Plank).
-- **XML:** Used for GResource manifests (`gnome-shell-theme.gresource.xml`), Metacity themes, and AppStream metadata.
+- CSS - Compiled style sheets for GTK and GNOME Shell
+- Python 3 - Fildem Global Menu/HUD implementation in `Fildem-Gnome-45/fildem/`
+- JavaScript - GNOME Shell extensions logic in `Fildem-Gnome-45/fildemGMenu@gonza.com/`
+- XML - Configuration for GResources (`src/main/gnome-shell/gnome-shell-theme.gresource.xml`) and GNOME Shell metadata
 
 ## Runtime
 
 **Environment:**
-- **Linux Shell:** The project is designed to run in a Linux terminal environment.
-- **GNOME Shell:** Target environment for many features.
+- Linux Desktop (GNOME, Cinnamon, XFCE, Budgie)
+- GNOME Shell 3.28 to 48+
+- Python 3.x for HUD/Global Menu
 
 **Package Manager:**
-- **System Package Managers:** Uses `apt`, `dnf`, `pacman`, `zypper`, `swupd`, `xbps`, and `eopkg` to manage build-time dependencies.
+- None (Shell-based installation)
+- Python `setuptools` used for Fildem component
 
 ## Frameworks
 
 **Core:**
-- **GTK 4.0:** Primary target for modern GNOME applications and Libadwaita.
-- **GTK 3.0:** Target for older GNOME applications and other desktop environments.
-- **GTK 2.0:** Legacy support for older applications.
+- GTK 2.0 - Legacy support, assets in `src/assets/gtk-2.0/`
+- GTK 3.0 - Primary styling, located in `src/main/gtk-3.0/`
+- GTK 4.0 / Libadwaita - Modern GTK support, located in `src/main/gtk-4.0/`
+- GNOME Shell - Desktop environment shell styling in `src/main/gnome-shell/`
+- Cinnamon - Desktop environment styling in `src/main/cinnamon/`
+- XFWM4 - XFCE Window Manager styling in `src/main/xfwm4/`
 
 **Testing:**
-- **Not detected:** No formal testing framework identified.
+- Not detected (Manual visual verification)
 
 **Build/Dev:**
-- **Sassc:** Used to compile SCSS to CSS.
-- **Inkscape:** Used to render SVG assets into PNGs.
-- **Optipng:** Used to optimize rendered PNG assets.
-- **Glib-compile-resources:** Used to bundle theme files into GResource binary files.
+- `sassc` - Compiles SCSS to CSS
+- `inkscape` - Renders SVG assets to PNG/SVG variants
+- `optipng` - Optimizes rendered PNG assets
+- `glib-compile-resources` - Compiles assets into GResource files for GDM and GNOME Shell
 
 ## Key Dependencies
 
 **Critical:**
-- `sassc`: Essential for generating CSS from source styles.
-- `libglib2.0-dev-bin` / `glib2-devel`: Provides `glib-compile-resources` for GDM and GTK resource bundling.
-- `libxml2-utils`: Provides `xmllint` for XML validation.
+- `sassc` - Essential for generating theme CSS from source SCSS
+- `libglib2.0-dev-bin` - Provides `glib-compile-resources`
 
 **Infrastructure:**
-- `imagemagick`: Used for background blurring and processing.
-- `dialog`: Used for interactive installation menus.
-- `ostree` & `flatpak`: Used for generating and installing Flatpak theme bundles.
+- `inkscape` - Required for asset generation from templates
+- `optipng` - Required for asset optimization
+- `ostree` / `flatpak` - Required for generating and installing Flatpak theme bundles (`libs/lib-flatpak.sh`)
+- `PyGObject` - Python bindings for GTK/GLib, required for Fildem component
 
 ## Configuration
 
 **Environment:**
-- Configured via shell script variables and command-line arguments.
-- Requires root privileges (`sudo`) for system-wide installation.
+- `THEME_DIR` - Set via `-d` flag in `install.sh`, defaults to `~/.themes` or `/usr/share/themes`
+- `REPO_DIR` - Inferred from the script location to locate source files
 
 **Build:**
-- `parse-sass.sh`: Main script for CSS generation.
-- `src/assets/render-all-assets.sh`: Main script for asset rendering.
+- `src/sass/_variables.scss` - Core theme configuration
+- `src/sass/_theme-options.scss` - User-customizable options during installation
 
 ## Platform Requirements
 
 **Development:**
-- Linux distribution with Bash, SASS compiler, and asset rendering tools (Inkscape, Optipng).
+- Linux with `bash`, `sassc`, `inkscape`, `optipng`, `glib-compile-resources`
+- `tar`, `xz` for packaging
 
 **Production:**
-- Linux desktop environment supporting GTK or specific themes (GNOME, Cinnamon, XFCE, etc.).
+- GNOME-based or GTK-compatible Linux distribution
 
 ---
 
-*Stack analysis: 2025-02-12*
+*Stack analysis: 2026-05-24*

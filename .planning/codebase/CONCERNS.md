@@ -1,86 +1,86 @@
 # Codebase Concerns
 
-**Analysis Date:** 2025-05-03
+**Analysis Date:** 2026-05-24
 
 ## Tech Debt
 
-**SASS Complexity and FIXMEs:**
-- Issue: The core SASS files for GTK 3 and 4 are extremely large and contain numerous `FIXME`, `HACK`, and `TODO` comments indicating incomplete styling or workarounds for upstream issues.
-- Files: `src/sass/gtk/_common-3.0.scss`, `src/sass/gtk/_common-4.0.scss`, `src/sass/gtk/apps/_gnome-3.22.scss`
-- Impact: Difficult to maintain and update the theme for new GTK versions; potential for visual regressions.
-- Fix approach: Refactor large SASS files into smaller, component-based modules and address long-standing `FIXME` items.
-
 **Monolithic Installation Scripts:**
-- Issue: `libs/lib-install.sh` and `libs/lib-core.sh` are very large (47KB and 25KB respectively) and contain complex logic for multi-distro support, dependency management, and theme installation.
-- Files: `libs/lib-install.sh`, `libs/lib-core.sh`
-- Impact: High risk of bugs when adding support for new distributions or modifying installation logic. Hard to debug.
-- Fix approach: Break down installation logic into distro-specific modules or use a more robust automation tool.
+- Issue: `libs/lib-install.sh` (1087 lines) and `libs/lib-core.sh` (814 lines) are extremely large and contain deeply nested procedural logic for system-wide configuration and dependency management.
+- Files: `libs/lib-install.sh`, `libs/lib-core.sh`, `install.sh`, `tweaks.sh`
+- Impact: Very difficult to maintain, test, or extend. High risk of side effects when modifying installer logic.
+- Fix approach: Refactor into smaller, modular scripts focused on specific tasks (e.g., separate package management from file operations).
 
-**In-place Release Building:**
-- Issue: `make-release.sh` installs themes directly to the developer's system before compressing them for release.
-- Files: `make-release.sh`
-- Impact: Pollutes the developer's environment and risks releasing local configurations/modifications.
-- Fix approach: Use a temporary build directory (sandbox) for creating release packages.
+**Unresolved SASS/CSS Hacks:**
+- Issue: Numerous `FIXME` and `HACK` comments in SASS files indicate workarounds for GTK bugs or incomplete theme assets.
+- Files: `src/sass/gtk/_common-3.0.scss`, `src/sass/gtk/_common-4.0.scss`, `src/sass/gtk/apps/_gnome-3.22.scss`, `src/main/gtk-4.0/gtk-Dark.css`
+- Impact: Visual inconsistencies across different GTK versions and missing UI elements (e.g., OSD and selected list rows mentioned in `_common-4.0.scss`).
+- Fix approach: Systematically address `FIXME` items, especially those noting missing assets or "temporary" workarounds.
+
+**Dangling TODOs:**
+- Issue: Some scripts reference non-existent integrations or incomplete features.
+- Files: `clean-git.sh` (Line 6: `TODO: integrate with Bridge.sh`), `libs/lib-core.sh` (Line 268: `TODO: return "lockWhiteSur()" back...`)
+- Impact: Confusion for developers and potential dead code.
+- Fix approach: Remove obsolete TODOs or implement the missing functionality.
 
 ## Security Considerations
 
-**Aggressive Sudo Usage:**
-- Risk: Extensive use of `sudo` for operations like `rm -rf`, `mv`, and package installation. The `sudo` command itself is overridden with a custom function.
-- Files: `libs/lib-core.sh`, `libs/lib-install.sh`, `parse-sass.sh`
-- Current mitigation: Minimal; scripts prompt for password when needed.
-- Recommendations: Avoid overriding `sudo`. Use more granular permissions and avoid system-wide modifications where possible (e.g., install to `~/.local/share/themes` instead of `/usr/share/themes`).
+**Excessive Sudo Usage:**
+- Issue: The project relies heavily on `sudo` for many operations that might not strictly require it, or could be handled more safely.
+- Files: `libs/lib-install.sh`, `libs/lib-core.sh`, `tweaks.sh`, `install.sh`
+- Risk: Potential for system corruption if a bug exists in the scripts. Running arbitrary logic with root privileges.
+- Current mitigation: Some checks to prevent running `--libadwaita` with sudo in `install.sh`.
+- Recommendations: Implement a safer permission model; separate root operations from user-level configuration.
 
-**System File Modification:**
-- Risk: The script aggressively modifies `/etc/os-release` on Clear Linux to fix `swupd` issues.
+**Insecure Dependency Installation:**
+- Issue: `clean-git.sh` attempts to `sudo pip install` a package.
+- Files: `clean-git.sh`
+- Risk: Installing Python packages as root is highly discouraged as it can break system-managed Python environments.
+- Current mitigation: None.
+- Recommendations: Use `pipx` or install to user directory.
+
+**System Clock Manipulation:**
+- Issue: `prepare_deps` in `libs/lib-install.sh` updates the system clock using `sudo date -s` based on UTC time fetched from a remote source.
 - Files: `libs/lib-install.sh`
+- Risk: If the remote source is compromised, the script can be used to set an incorrect system time, potentially breaking SSL/TLS and other security mechanisms.
 - Current mitigation: None.
-- Recommendations: Avoid modifying critical system files; use less invasive methods to detect or fix package manager issues.
-
-**Forced System Clock Synchronization:**
-- Risk: The installer forces a system clock update by connecting to `iana.org` over plain HTTP (port 80).
-- Files: `libs/lib-core.sh` (function `get_utc_epoch_time`), `libs/lib-install.sh` (function `prepare_deps`)
-- Current mitigation: None.
-- Recommendations: Use standard NTP services if necessary, or better, do not force clock updates as a side effect of installing a theme.
-
-## Performance Bottlenecks
-
-**Network Dependency during Installation:**
-- Problem: The installation process blocks on a network request to `iana.org` for time synchronization.
-- Files: `libs/lib-core.sh`, `libs/lib-install.sh`
-- Cause: `prepare_deps` calls `get_utc_epoch_time` which uses `/dev/tcp/iana.org/80`.
-- Improvement path: Make this check optional or remove it; users should manage their own system clock.
-
-**Large CSS Assets:**
-- Problem: The generated CSS files are quite large due to the complexity of the theme.
-- Files: `src/main/gtk-3.0/gtk.css`, `src/main/gtk-4.0/gtk.css`
-- Cause: Deeply nested SASS and extensive styling for many applications.
-- Improvement path: Optimize SASS/CSS to reduce redundancy and file size.
+- Recommendations: Use system-standard NTP services instead of manual time setting.
 
 ## Fragile Areas
 
-**Distro-Specific Patches:**
+**Distro-Specific Logic Overload:**
+- Issue: The codebase contains complex, branching logic to support a wide array of Linux distributions and package managers.
 - Files: `libs/lib-install.sh`
-- Why fragile: Contains many hardcoded logic paths for different distributions (Ubuntu, Fedora, Clear Linux, Arch, etc.). Small changes in these distros' package managers or file structures can break the installer.
-- Safe modification: Thoroughly test on multiple distributions after any change to `lib-install.sh`.
-- Test coverage: Gaps in automated testing for multi-distro installation.
+- Why fragile: Maintaining compatibility with `apt`, `dnf`, `zypper`, `pacman`, `xbps`, `eopkg`, and `swupd` is error-prone and requires constant testing on multiple platforms.
+- Safe modification: Encapsulate distro-specific operations into separate provider scripts.
+
+**Hardcoded Version Detection:**
+- Issue: GNOME version detection is based on hardcoded ranges and string parsing of `gnome-shell --version`.
+- Files: `libs/lib-core.sh`
+- Why fragile: Will likely break or default to incorrect versions when GNOME 49+ is released.
+- Safe modification: Use more robust version comparison logic or dynamic feature detection.
 
 **Hardcoded Application Paths:**
+- Issue: Paths for Firefox, Librewolf, Floorp, and GNOME extensions are hardcoded for various installation methods (Flatpak, Snap, Home).
 - Files: `libs/lib-core.sh`
-- Why fragile: Hardcoded paths for Firefox, Librewolf, and Floorp profiles (including Flatpak and Snap versions).
-- Safe modification: Check if these paths are still valid when these applications update their structure.
-- Test coverage: None.
+- Why fragile: Changes in upstream packaging (e.g., Snap or Flatpak mount points) will break theme installation for those apps.
+- Safe modification: Use variables or search for application profiles dynamically.
 
-**Shell Version Detection:**
-- Files: `libs/lib-core.sh`
-- Why fragile: Relies on parsing `gnome-shell --version` output, which may vary across distributions or future versions.
-- Safe modification: Ensure the parsing logic is robust against different version string formats.
+## Performance Bottlenecks
 
-## Missing Critical Features
+**Asset Rendering:**
+- Problem: `src/assets/render-all-assets.sh` uses Inkscape and Optipng to render hundreds of assets sequentially.
+- Files: `src/assets/render-all-assets.sh`
+- Cause: Single-threaded rendering of a large volume of SVG assets.
+- Improvement path: Parallelize rendering using `xargs -P` or a similar tool.
 
-**Automated Testing:**
-- Problem: Lack of automated tests for the installation scripts and the visual integrity of the theme across different GTK versions.
-- Blocks: Safe refactoring and reliable multi-distro support.
+## Test Coverage Gaps
+
+**Installer Logic:**
+- What's not tested: The complex branching logic in `lib-install.sh` is entirely untested via automated means.
+- Files: `libs/lib-install.sh`, `libs/lib-core.sh`
+- Risk: Regressions in one distro's installation path might go unnoticed until reported by users.
+- Priority: High
 
 ---
 
-*Concerns audit: 2025-05-03*
+*Concerns audit: 2026-05-24*

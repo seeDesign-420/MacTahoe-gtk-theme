@@ -1,100 +1,89 @@
 # Architecture
 
-**Analysis Date:** 2025-02-12
+**Analysis Date:** 2026-05-24
 
 ## Pattern Overview
 
-**Overall:** Template-driven Theme Build and Installation System.
-
-The codebase follows a "Source-to-Variant" architectural pattern. It uses SASS templates and shell scripts to dynamically generate hundreds of theme variations based on user-selected parameters (color, opacity, accent, etc.).
+**Overall:** Modular Theme Compilation and Distribution
 
 **Key Characteristics:**
-- **Dynamic SASS Generation:** Uses temporary `-temp.scss` files and `sed` to inject user configurations into SASS variables before compilation.
-- **Modularity:** Core logic is decoupled into library scripts (`libs/`) and component-specific source directories (`src/main/`).
-- **Combinatorial Variant Management:** A nested loop structure in the installer generates all requested permutations of Light/Dark, Solid/Transparent, and Accent colors.
+- **Dynamic SCSS Compilation:** Themes are not pre-compiled; they are generated at install-time based on user preferences.
+- **Variant-Based Iteration:** The system uses nested loops to generate dozens of theme combinations (Color x Opacity x Accent x Scheme).
+- **Template-Driven Configuration:** Uses "temp" SCSS files (e.g., `_gtk-base-temp.scss`) that are modified via `sed` before compilation.
 
 ## Layers
 
 **Configuration Layer:**
-- Purpose: Defines the available variants and system paths.
-- Location: `libs/lib-core.sh`
-- Contains: Global variables, variant definitions (COLOR_VARIANTS, THEME_VARIANTS), and path constants.
-- Depends on: System environment (GNOME version, user home).
-- Used by: All installation and build scripts.
+- Purpose: Defines the available variants, paths, and user options.
+- Location: `libs/lib-core.sh` and `install.sh`
+- Contains: Environment variables, variant definitions, and argument parsing logic.
 
-**Build Layer:**
-- Purpose: Compiles SASS templates into CSS and manages assets.
-- Location: `src/sass/`, `src/main/`, `parse-sass.sh`
-- Contains: SASS partials, component entry points, and the compilation script.
-- Depends on: `sassc`, `src/assets/`
-- Used by: `libs/lib-install.sh`
+**Logic Layer:**
+- Purpose: Orchestrates the installation, compilation, and customization of themes.
+- Location: `libs/lib-install.sh`
+- Contains: Bash functions for installing dependencies, compiling SASS, and moving assets.
 
-**Installation Layer:**
-- Purpose: Handles dependency checks, file placement, and environment tweaks.
-- Location: `install.sh`, `tweaks.sh`, `libs/lib-install.sh`
-- Contains: Logic for theme distribution to standard Linux directories and application-specific paths (Firefox, GDM, Flatpak).
-- Depends on: Build Layer, Configuration Layer.
-- Used by: End-user.
+**Style Layer (SCSS):**
+- Purpose: Source styles for all supported platforms.
+- Location: `src/sass/`
+- Contains: Modular SCSS components, mixins, and variables.
+- Depends on: `src/sass/_variables.scss`, `src/sass/_colors.scss`
+
+**Asset Layer:**
+- Purpose: Static assets (icons, images, thumbnails) required by the themes.
+- Location: `src/assets/`
+- Contains: SVG icons, PNG thumbnails, and shell assets.
 
 ## Data Flow
 
-**Theme Installation Flow:**
+**Theme Generation Flow:**
 
-1. **Parameter Parsing:** `install.sh` parses CLI arguments using `check_param` from `libs/lib-core.sh`.
-2. **Environment Preparation:** `libs/lib-install.sh` checks for dependencies (`sassc`, `glib2`, etc.) and detects the host environment (Distro, GNOME version).
-3. **Template Configuration:** `gtk_base` and `customize_theme` in `libs/lib-install.sh` create temporary `.scss` files by applying `sed` replacements to the source templates in `src/sass/`.
-4. **Compilation:** `sassc` compiles the configured SASS templates from `src/main/` into CSS.
-5. **Asset Assembly:** `install_theemy` and `install_shelly` copy the compiled CSS and matching assets from `src/assets/` to the destination directory.
-6. **Integration:** Tweaks are applied for specific applications (Firefox, Dash-to-Dock) or system components (GDM).
+1. **User Input:** User runs `install.sh` with specific flags (e.g., `--blur --darker`).
+2. **Template Preparation:** `customize_theme` and `gtk_base` copy source `.scss` files to `-temp.scss` versions.
+3. **Property Injection:** `sed` commands in `libs/lib-install.sh` modify variables inside the `-temp.scss` files.
+4. **Compilation:** `sassc` compiles the entry points in `src/main/` (which import the temp files) into CSS.
+5. **Asset Assembly:** Static assets from `src/assets/` are copied to the destination alongside the compiled CSS.
+6. **Resource Bundling (Optional):** For GDM or specific GTK versions, `glib-compile-resources` packages CSS and assets into a `.gresource` file.
 
 **State Management:**
-- **Transient State:** Handled via environment variables and temporary files in `/tmp/MacTahoe.lock`.
-- **Persistent State:** Handled by the target filesystem (standard theme directories like `~/.themes` or `/usr/share/themes`).
+- Handled via shell variables and temporary files during the installation process.
 
 ## Key Abstractions
 
-**Library Modules:**
-- Purpose: Encapsulate shared logic for installation and external integrations.
-- Examples: `libs/lib-install.sh`, `libs/lib-flatpak.sh`
-- Pattern: Shell Script Library (Sourced functions).
+**Theme Module:**
+- Purpose: A specific platform implementation (Shell, GTK, Cinnamon).
+- Examples: `install_shelly`, `install_theemy` in `libs/lib-install.sh`.
 
-**Theme Variants:**
-- Purpose: Represents a specific combination of visual attributes.
-- Examples: `src/main/gtk-3.0/gtk-Dark.scss`, `src/assets/gtk/thumbnails/`
-- Pattern: SASS Mixins and Variable Overrides.
+**Variant Generator:**
+- Purpose: Iterates through all selected permutations to create multiple theme directories.
+- Pattern: Nested for-loops in `install_themes` function.
 
 ## Entry Points
 
-**Primary Installer:**
+**install.sh:**
 - Location: `install.sh`
-- Triggers: User CLI execution.
-- Responsibilities: Main entry for full theme installation and uninstallation.
+- Triggers: User execution from terminal.
+- Responsibilities: CLI interface, argument validation, and calling the main installation loop.
 
-**Tweaks Manager:**
+**tweaks.sh:**
 - Location: `tweaks.sh`
-- Triggers: User CLI execution.
-- Responsibilities: Handles GDM, Firefox, Flatpak, and Dash-to-Dock specific integrations.
-
-**Build Helper:**
-- Location: `parse-sass.sh`
-- Triggers: Developer execution.
-- Responsibilities: Simplifies SASS to CSS compilation for development.
+- Triggers: User execution.
+- Responsibilities: Post-installation modifications and specific desktop environment tweaks.
 
 ## Error Handling
 
-**Strategy:** Trap-based signal handling and defensive programming in shell scripts.
+**Strategy:** Fail-soft with user notification.
 
 **Patterns:**
-- **Error Traps:** `trap 'signal_error' ERR` in `libs/lib-core.sh` captures command failures and prints detailed system/environment logs.
-- **Safety Locks:** Uses `/tmp/MacTahoe.lock` to prevent concurrent installer runs.
-- **Backup/Restore:** Utility functions `backup_file` and `restore_file` manage safe modification of system config files.
+- **Dependency Checks:** `has_command` checks for required tools (`sassc`, `glib-compile-resources`) before proceeding.
+- **Cleanup:** `clean_themes` removes existing versions before re-installing to prevent state corruption.
 
 ## Cross-Cutting Concerns
 
-**Logging:** Standard output with color-coded prompts (`prompt -i`, `-e`, etc.) and an error log file in `/tmp/`.
-**Validation:** `check_param` validates all CLI inputs against allowed variants.
-**Authentication:** `sudo` and `udo` wrappers in `libs/lib-core.sh` manage privilege escalation when writing to system directories.
+**Logging:** Uses a custom `prompt` function in `libs/lib-core.sh` for formatted console output.
+**Validation:** `check_param` ensures CLI arguments match supported variants.
+**Authentication:** Elevation via `sudo` or `udo` (custom wrapper) is handled for system-wide installations.
 
 ---
 
-*Architecture analysis: 2025-02-12*
+*Architecture analysis: 2026-05-24*

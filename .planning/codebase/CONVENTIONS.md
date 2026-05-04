@@ -1,88 +1,98 @@
 # Coding Conventions
 
-**Analysis Date:** 2025-02-11
+**Analysis Date:** 2026-05-22
 
 ## Naming Patterns
 
 **Files:**
-- Shell scripts: `kebab-case.sh` (e.g., `install.sh`, `make-release.sh`).
-- SASS partials: `_kebab-case.scss` (e.g., `_variables.scss`, `_colors.scss`).
-- Library files: `lib-kebab-case.sh` in `libs/` (e.g., `libs/lib-core.sh`).
+- Shell scripts: `kebab-case.sh` (e.g., `install.sh`, `parse-sass.sh`).
+- SASS source files: `_kebab-case.scss` for partials (e.g., `_variables.scss`, `_drawing-3.0.scss`).
+- Entry point SASS: `gtk-Color.scss` (e.g., `gtk-Light.scss`).
+- Assets: `snake_case` or `kebab-case` (e.g., `src/assets/gtk/assets.svg`).
 
 **Functions:**
-- Shell functions: `snake_case` (e.g., `has_command`, `start_animation`).
-- SASS functions: `snake_case` (e.g., `to_em`, `gtkalpha`).
+- Bash: `snake_case` (e.g., `has_command`, `check_param`).
+- SASS: `snake_case` (e.g., `to_em`).
 
 **Variables:**
-- Shell Globals/Constants: `SCREAMING_SNAKE_CASE` (e.g., `REPO_DIR`, `THEME_NAME`).
-- Shell Locals: `snake_case` (e.g., `local color`, `local target_dir`).
-- SASS Variables: `$kebab-case` (e.g., `$base-color`, `$selected-bg-color`).
+- Bash Constants: `SCREAMING_SNAKE_CASE` (e.g., `REPO_DIR`, `THEME_NAME`).
+- Bash Local/Global state: `snake_case` or `lowercase` (e.g., `colors`, `activities_icon`).
+- SASS: `snake_case` or `kebab-case` (e.g., `$base_padding`, `$panel-corner-radius`).
 
 **Types:**
-- Not applicable (primarily Shell and SASS).
+- Not applicable (primarily Bash and SASS).
 
 ## Code Style
 
 **Formatting:**
-- Shell: `beautysh` is used with 2-space indentation (`beautysh -i 2 -s paronly`).
-- SASS: 2-space indentation observed.
+- Bash: `beautysh` is used for formatting.
+- Command: `beautysh -i 2 -s paronly *.sh`.
+- Indentation: 2 spaces.
 
 **Linting:**
-- No formal linter configuration detected, but `beautysh` acts as a style enforcer for shell scripts.
+- No automated linting detected, but `beautysh` is used for consistency.
 
 ## Import Organization
 
 **Order:**
-1. Core libraries (e.g., `source "${REPO_DIR}/libs/lib-core.sh"`).
-2. Specialized libraries (e.g., `source "${REPO_DIR}/libs/lib-flatpak.sh"`).
-3. Temporary configuration files in SASS (e.g., `@import 'theme-options-temp'`).
+1. Variables: `@import '../../sass/variables';`
+2. Colors: `@import '../../sass/colors';`
+3. Drawing: `@import '../../sass/gtk/drawing-3.0';`
+4. Common: `@import '../../sass/gtk/common-3.0';`
+5. Apps/Specifics: `@import '../../sass/gtk/apps-3.0';`
 
 **Path Aliases:**
-- Not used. Absolute paths are constructed using `REPO_DIR` or `THEME_SRC_DIR`.
+- Relative paths are used throughout: `../../sass/...`.
 
 ## Error Handling
 
 **Patterns:**
-- Shell scripts use `set -Eeo pipefail` for strict error behavior.
-- `trap` is used to handle signals (`EXIT`, `ERR`, `INT`, `TERM`, `TSTP`) in `libs/lib-core.sh`.
-- Custom `signal_error` function provides detailed logs and system info upon failure.
-- A lock directory `/tmp/MacTahoe.lock` is used to prevent concurrent execution and store error logs.
+- Bash scripts use `set -Eeo pipefail` to ensure scripts stop on errors.
+- Dependency checks: Scripts verify existence of `sassc`, `sudo`, etc., before proceeding.
+- Import guarding: Shared libraries use a guard pattern:
+  ```bash
+  if [[ "${MACTAHOE_SOURCE[@]}" =~ "lib-core.sh" ]]; then
+    echo "'lib-core.sh' is already imported"; exit 1
+  fi
+  MACTAHOE_SOURCE=("lib-core.sh")
+  ```
 
 ## Logging
 
-**Framework:** Custom `prompt` function in `libs/lib-core.sh`.
+**Framework:** `echo` and custom helpify functions.
 
 **Patterns:**
-- `-s`: Success (green).
-- `-e`: Error (red).
-- `-w`: Warning (yellow).
-- `-i`: Info (cyan).
-- `-t`: Title (magenta).
+- Status messages: `echo "==> Generating the 3.0 gtk${color}.css..."`.
+- Error messages: `echo "Please define 'REPODIR' variable"; exit 1`.
 
 ## Comments
 
 **When to Comment:**
-- Header blocks for section separators (e.g., `################ VARIABLES ################`).
-- WARNING/SUGGESTION blocks at the start of scripts to guide contributors.
-- TODO comments for planned improvements.
+- Section headers in large scripts.
+- TODOs for future integrations.
+- Warnings about directory dependency or usage of `cd`.
 
 **JSDoc/TSDoc:**
-- Not used.
+- Not applicable. Bash scripts use simple block comments for function descriptions.
 
 ## Function Design
 
-**Size:** Functions are generally focused on a single task (e.g., `install_shelly`, `prepare_deps`).
+**Size:** Functions are generally small and focused (e.g., `has_command`, `usage`).
 
-**Parameters:** Use of `local` variables to capture positional parameters (e.g., `local color="${1}"`).
+**Parameters:**
+- Bash: Standard positional parameters. Some use `check_param` helper for validation.
 
-**Return Values:** Standard shell exit codes. Helper functions like `has_command` return 0/1 for boolean checks.
+**Return Values:**
+- Bash: Return codes for success/failure.
 
 ## Module Design
 
-**Exports:** Environment variables are exported when needed by subshells (e.g., `export MACTAHOE_PID`).
+**Exports:**
+- Bash: `source` and `export` are used to share variables and functions across scripts.
 
-**Barrel Files:** `libs/lib-install.sh` acts as a barrel for other libraries.
+**Barrel Files:**
+- `libs/lib-core.sh` acts as a central library for other scripts.
 
 ---
 
-*Convention analysis: 2025-02-11*
+*Convention analysis: 2026-05-22*

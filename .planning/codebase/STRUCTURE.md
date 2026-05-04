@@ -1,109 +1,99 @@
 # Codebase Structure
 
-**Analysis Date:** 2025-02-12
+**Analysis Date:** 2026-05-24
 
 ## Directory Layout
 
 ```
-[project-root]/
-├── libs/           # Shell script libraries for installation logic
-├── src/            # Core theme source files (SASS, assets, main templates)
-│   ├── assets/     # Images and SVGs for various environments
-│   ├── main/       # Component-specific SASS entry points and static files
-│   └── sass/       # Shared SASS variables, colors, and base styles
-├── other/          # Third-party app integrations (Firefox, GDM, Plank, etc.)
-├── release/        # Pre-built theme archives
-├── wallpaper/      # Source wallpapers and XML config
-├── install.sh      # Main theme installation script
-├── tweaks.sh       # Integration and customization script
-└── parse-sass.sh   # SASS to CSS compilation helper
+MacTahoe-gtk-theme/
+├── src/                # Theme source code and assets
+│   ├── sass/           # Modular SCSS files and variables
+│   ├── main/           # Platform-specific SCSS entry points
+│   └── assets/         # Icons, thumbnails, and graphical assets
+├── libs/               # Shared bash library scripts
+├── other/              # Extra themes and integrations
+│   ├── firefox/        # Firefox browser theme
+│   ├── gdm/            # GNOME Display Manager theme source
+│   ├── plank/          # Plank dock themes
+│   └── dash-to-dock/   # Dash-to-dock extension styles
+├── wallpaper/          # Source wallpapers and installer
+├── release/            # Pre-packaged theme archives (generated)
+├── install.sh          # Main installation script
+└── tweaks.sh           # Post-installation customization script
 ```
 
 ## Directory Purposes
 
-**libs/:**
-- Purpose: Contains modularized shell logic used by `install.sh` and `tweaks.sh`.
-- Contains: Helper functions for system detection, file management, and dependency installation.
-- Key files: `lib-core.sh`, `lib-install.sh`, `lib-flatpak.sh`.
-
 **src/sass/:**
-- Purpose: The core styling logic using SASS.
-- Contains: Variables, color palettes, and base component styles shared across GTK versions and desktop environments.
-- Key files: `_colors.scss`, `_variables.scss`, `_gtk-base.scss`.
+- Purpose: Contains the core styling logic shared across different platforms.
+- Contains: SCSS variables (`_variables.scss`), color palettes (`_colors.scss`), and platform-specific modules (GTK, GNOME Shell, Cinnamon).
 
 **src/main/:**
-- Purpose: Host-specific SASS entry points and legacy static configuration.
-- Contains: SCSS files that @import from `src/sass/` for specific targets like `gtk-3.0`, `gtk-4.0`, or `gnome-shell`. Also contains GTK2 `.rc` files.
-- Key files: `gtk-3.0/gtk-Dark.scss`, `gnome-shell/gnome-shell.scss`.
+- Purpose: Entry points for SCSS compilation.
+- Contains: Files like `gtk-Dark.scss` or `gnome-shell-Light.scss` which import modular files from `src/sass/`.
 
-**src/assets/:**
-- Purpose: Visual assets for all theme variants.
-- Contains: Subdirectories for each supported environment (Cinnamon, GNOME Shell, GTK, XFWM4) with PNGs and SVGs.
-- Key files: `gtk/scalable/`, `gnome-shell/common-assets/`.
+**libs/:**
+- Purpose: Reusable bash logic to keep `install.sh` clean.
+- Contains: `lib-core.sh` (utilites), `lib-install.sh` (theme installation logic), `lib-flatpak.sh` (Flatpak integration).
 
 **other/:**
-- Purpose: Integration files for applications outside the standard GTK/Shell scope.
-- Contains: Firefox `userChrome.css` templates, GDM resource XMLs, and Plank dock themes.
-- Key files: `firefox/userChrome.css`, `gdm/gnome-shell-theme.gresource.xml`.
+- Purpose: Hosts non-standard theme components and third-party app integrations.
+- Key files: `other/gdm/make_gresource.sh` for bundling GDM themes.
 
-**release/:**
-- Purpose: Distribution point for pre-compiled themes.
-- Contains: `.tar.xz` archives of various theme combinations.
+**wallpaper/:**
+- Purpose: Provides the MacTahoe branded backgrounds used by GDM and GNOME.
+- Key files: `install-gnome-backgrounds.sh`
 
 ## Key File Locations
 
 **Entry Points:**
-- `install.sh`: The primary script for installing the GTK and GNOME Shell themes.
-- `tweaks.sh`: Script for application-specific tweaks (Firefox, Flatpak, GDM).
-- `parse-sass.sh`: Developer utility to compile all SASS sources.
+- `install.sh`: The primary installer for all theme variants.
+- `tweaks.sh`: Utility for applying specific patches or changing options after install.
+- `parse-sass.sh`: Developer utility to manually recompile all SCSS.
 
 **Configuration:**
-- `libs/lib-core.sh`: Global configuration, variant definitions, and system paths.
-- `src/sass/_variables.scss`: SASS-level configuration.
+- `src/sass/_variables.scss`: Core theme measurements and constants.
+- `src/sass/_colors-palette.scss`: Primary color definitions.
 
 **Core Logic:**
-- `libs/lib-install.sh`: Implementation of the installation algorithms.
+- `libs/lib-install.sh`: Contains the heavy lifting for file movement and SASS compilation.
 
 **Testing:**
-- Not detected: Project uses manual visual verification instead of automated tests.
+- `test-pathbar.css`: CSS file likely used for visual debugging of the pathbar component.
 
 ## Naming Conventions
 
 **Files:**
-- SASS Partials: `_filename.scss` (e.g., `_colors.scss`).
-- Entry SASS: `target-variant.scss` (e.g., `gtk-Dark.scss`).
-- Scripts: `kebab-case.sh`.
+- SCSS Partials: `_*.scss` (e.g., `_common.scss`)
+- Scripts: `*.sh` (e.g., `clean-git.sh`)
 
 **Directories:**
-- Feature/Component: `kebab-case` or `component-version` (e.g., `dash-to-dock`, `gtk-3.0`).
+- Plural nouns for collections: `assets`, `libs`, `other`.
 
 ## Where to Add New Code
 
-**New Visual Style/Variable:**
-- Add to `src/sass/_variables.scss` or `src/sass/_colors-palette.scss`.
+**New Feature (e.g., support for a new desktop environment):**
+- Primary code: Create a new directory in `src/sass/[env]` and `src/main/[env]`.
+- Logic: Add an `install_[env]` function in `libs/lib-install.sh`.
+- Entry: Update `install.sh` to include the new option.
 
-**New GTK/Shell Component Style:**
-- Add to the corresponding SASS partial in `src/sass/` (e.g., `_gtk-base.scss` for general GTK widgets).
+**New Component/Module:**
+- Implementation: Add a new partial in `src/sass/gtk/` or `src/sass/gnome-shell/common/`.
 
-**New External App Integration:**
-- Create a new subdirectory in `other/`.
-- Add installation logic to `tweaks.sh` and `libs/lib-install.sh`.
-
-**New Asset:**
-- Place in the appropriate subdirectory within `src/assets/`, ensuring it follows the variant naming pattern if applicable.
+**Utilities:**
+- Shared helpers: `libs/lib-core.sh`.
 
 ## Special Directories
 
-**release/:**
-- Purpose: Contains pre-built binaries/archives for end-users.
-- Generated: Yes (via `make-release.sh`).
+**.planning/:**
+- Purpose: GSD-specific project documentation and codebase mapping.
 - Committed: Yes.
 
-**.git/:**
-- Purpose: Git version control metadata.
+**release/:**
+- Purpose: Contains compressed archives for distribution.
 - Generated: Yes.
-- Committed: No.
+- Committed: Yes (in this repo).
 
 ---
 
-*Structure analysis: 2025-02-12*
+*Structure analysis: 2026-05-24*

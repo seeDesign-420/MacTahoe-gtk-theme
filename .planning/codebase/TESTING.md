@@ -1,82 +1,87 @@
 # Testing Patterns
 
-**Analysis Date:** 2025-02-11
+**Analysis Date:** 2026-05-22
 
 ## Test Framework
 
 **Runner:**
-- No automated test runner (e.g., Bats, ShellSpec) is currently used.
+- None. Testing is primarily manual and visual.
 
 **Assertion Library:**
-- Manual checks using shell conditionals (e.g., `[[ -f "${FILE}" ]]`, `has_command`).
+- None.
 
 **Run Commands:**
 ```bash
-./install.sh           # Manual installation test
-./make-release.sh      # Build-time verification and packaging
-./parse-sass.sh        # Verify SASS compilation
+./parse-sass.sh        # Compiles SASS and verifies no syntax errors
+./install.sh           # Tests installation process
+./clean-git.sh         # Formats scripts and cleans the repo
 ```
 
 ## Test File Organization
 
 **Location:**
 - No dedicated test directory.
+- `test-pathbar.css` in the root is used for manual CSS testing of Nautilus.
 
 **Naming:**
-- Not applicable.
+- Manual test snippets: `test-*.css`.
+
+**Structure:**
+```
+[project-root]/
+├── test-pathbar.css
+└── src/assets/render-all-assets.sh
+```
 
 ## Test Structure
 
 **Suite Organization:**
-Testing is performed manually by running the installation scripts on different distributions or desktop environments.
+Not applicable. No automated test suites.
 
 **Patterns:**
-- **Dependency Validation:** Scripts check for required tools (`sassc`, `inkscape`, `optipng`, `glib-compile-resources`, `xmllint`) before proceeding.
-- **Environment Checks:** Scripts detect the OS (Debian, Arch, Fedora, etc.) and Desktop Environment (GNOME, Cinnamon, XFCE) to apply correct settings.
-- **Visual Inspection:** Release includes screenshots (`screenshot01.jpeg`) to serve as a baseline for visual correctness.
+- Visual Verification: Developers install the theme and inspect UI elements (buttons, headerbars, menus) across different GNOME versions and applications.
 
 ## Mocking
 
-**Framework:** Not used.
+**Framework:** None.
 
 **Patterns:**
-- Real system calls are used. The script uses a lock directory `/tmp/MacTahoe.lock` to simulate a "session" and capture real error output.
+Not applicable.
 
 ## Fixtures and Factories
 
 **Test Data:**
-- Sample configurations for Firefox, GDM, and Dash-to-Dock are stored in `other/`.
+Not applicable.
 
 **Location:**
-- `other/firefox/`
-- `other/gdm/`
-- `other/dash-to-dock/`
+Not applicable.
 
 ## Coverage
 
-**Requirements:** None enforced.
+**Requirements:** No coverage metrics enforced.
+
+**View Coverage:**
+Not applicable.
 
 ## Test Types
 
 **Unit Tests:**
-- Not used. Logic is tested through end-to-end execution of installation scripts.
+- None.
 
 **Integration Tests:**
-- Manual verification of theme application across different GTK versions (GTK 2, 3, 4) and Shell versions.
+- `parse-sass.sh`: Indirectly tests the integration of various SASS partials by attempting to compile them into valid CSS.
 
 **E2E Tests:**
-- Manual execution of `install.sh` with various flags (e.g., `./install.sh -t blue -s nord`).
+- `install.sh`: Tests the end-to-end installation flow, including environment detection, path creation, and file copying.
 
 ## Common Patterns
 
 **Async Testing:**
-- The `remove_themes` function in `libs/lib-install.sh` uses background processes (`&`) and `wait` for parallel cleanup, but this is for performance, not testing.
+Not applicable.
 
 **Error Testing:**
-- The script intentionally captures standard error into a log file:
-  `exec 2> "${MACTAHOE_TMP_DIR}/error_log.txt"`
-- This log is displayed by `signal_error` when a command fails.
+- Dependency checks in scripts (e.g., checking for `sassc` or `gnome-shell`) serve as primitive error-path tests.
 
 ---
 
-*Testing analysis: 2025-02-11*
+*Testing analysis: 2026-05-22*
