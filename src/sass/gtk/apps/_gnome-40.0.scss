@@ -191,9 +191,7 @@
       &,
       banner>revealer>widget {
         box-shadow:
-          0 0 0 $container_padding $base_color,
-          0 32px 0 $container_padding $base_color,
-          0 -32px 0 $container_padding $base_color,
+          -2px 0 0 20px $base_color,
           2px 3px 12px rgba(black, 0.1),
           inset 0 0 0 1px $sidebar_highlight_color;
       }
@@ -205,9 +203,7 @@
       &,
       banner>revealer>widget {
         box-shadow:
-          0 0 0 $container_padding $base_color,
-          0 32px 0 $container_padding $base_color,
-          0 -32px 0 $container_padding $base_color,
+          2px 0 0 20px $base_color,
           -2px 3px 12px rgba(black, 0.1),
           inset 0 0 0 1px $sidebar_highlight_color;
       }
