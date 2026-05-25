@@ -273,6 +273,67 @@ $popover_bubble_bg: if($variant == 'light', rgba(white, 0.95), rgba(lighten($bas
   }
 }
 
+.datemenu-popover {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 1px solid if($variant == 'light', rgba(black, 0.08), rgba(white, 0.12));
+  box-shadow: none !important;
+}
+
+#calendarArea,
+.datemenu-calendar-column,
+.datemenu-displays-section,
+.datemenu-displays-box {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.datemenu-today-button,
+.calendar {
+  background-color: transparent;
+}
+
+.datemenu-today-button:hover,
+.datemenu-today-button:focus {
+  background-color: rgba(white, 0.04);
+}
+
+.datemenu-today-button:active {
+  background-color: rgba(white, 0.08);
+}
+
+.calendar .calendar-month-label,
+.calendar .calendar-day-heading,
+.calendar .pager-button,
+.calendar .calendar-day,
+.calendar .calendar-day-base,
+.calendar .calendar-today {
+  background-color: transparent;
+}
+
+.calendar .pager-button:hover,
+.calendar .pager-button:focus,
+.calendar .calendar-day:hover,
+.calendar .calendar-day:focus,
+.calendar .calendar-day-base:hover,
+.calendar .calendar-day-base:focus {
+  background-color: rgba(white, 0.05);
+}
+
+.calendar .calendar-day:active,
+.calendar .calendar-day-base:active,
+.calendar .calendar-day:selected,
+.calendar .calendar-day-base:selected {
+  background-color: rgba(white, 0.08);
+}
+
+.calendar .calendar-today {
+  color: $fg_color !important;
+  border: 1px solid rgba(white, 0.12);
+}
+
 .world-clocks-button,
 .weather-button,
 .events-button {

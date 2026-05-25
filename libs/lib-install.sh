@@ -387,7 +387,11 @@ install_shelly() {
   mkdir -p                                                                                    "${TARGET_DIR}"
   mkdir -p                                                                                    "${TARGET_DIR}/assets"
   cp -r "${THEME_SRC_DIR}/assets/gnome-shell/icons"                                           "${TARGET_DIR}"
-  cp -r "${THEME_SRC_DIR}/main/gnome-shell/pad-osd.css"                                       "${TARGET_DIR}"
+  if [[ -f "${THEME_SRC_DIR}/main/gnome-shell/pad-osd${scheme}.css" ]]; then
+    cp -r "${THEME_SRC_DIR}/main/gnome-shell/pad-osd${scheme}.css"                           "${TARGET_DIR}/pad-osd.css"
+  else
+    cp -r "${THEME_SRC_DIR}/main/gnome-shell/pad-osd.css"                                     "${TARGET_DIR}"
+  fi
   sassc ${SASSC_OPT} "${THEME_SRC_DIR}/main/gnome-shell/gnome-shell${color}.scss"             "${TARGET_DIR}/gnome-shell.css"
 
   cp -r "${THEME_SRC_DIR}/assets/gnome-shell/common-assets/"*                                 "${TARGET_DIR}/assets"
@@ -773,7 +777,9 @@ install_firefox_theme() {
   local TARGET_DIR="${1}"
   local FIREFOX_DIR="${2}"
 
-  if [[ "${colorscheme}" == '-nord' && "${adaptive}" == '-adaptive' ]]; then
+  if [[ "${colorscheme}" == '-catppuccin' ]]; then
+    local theme_type="${colorscheme}"
+  elif [[ "${colorscheme}" == '-nord' && "${adaptive}" == '-adaptive' ]]; then
     local theme_type="${adaptive}"
   else
     local theme_type="${darker}${adaptive}${colorscheme}"
@@ -958,9 +964,10 @@ gtk_base() {
     sed $SED_OPT "/\$theme/s/default/${theme}/"                                 "${THEME_SRC_DIR}/sass/_gtk-base-temp.scss"
   fi
 
-  if [[ "${scheme}" == 'nord' ]]; then
-    sed $SED_OPT "/\$scheme/s/standard/nord/"                                   "${THEME_SRC_DIR}/sass/_gtk-base-temp.scss"
+  if [[ "${scheme}" == 'nord' || "${scheme}" == 'catppuccin' ]]; then
+    sed $SED_OPT "/\$scheme/s/standard/${scheme}/"                              "${THEME_SRC_DIR}/sass/_gtk-base-temp.scss"
     accent_type="fixed"
+    sed $SED_OPT "/\$accent_type/s/default/fixed/"                              "${THEME_SRC_DIR}/sass/_gtk-base-temp.scss"
   fi
 }
 

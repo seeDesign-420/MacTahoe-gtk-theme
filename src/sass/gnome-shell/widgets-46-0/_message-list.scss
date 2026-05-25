@@ -232,6 +232,75 @@ $card_bg: if($variant == 'light', rgba(white, 0.95), rgba(lighten($base_color, 8
   }
 }
 
+@if $trans == 'true' {
+  .message-list,
+  .message-list-sections,
+  .message-list-controls,
+  .notification-section,
+  .message-view,
+  .message-list-placeholder {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .message {
+    background-color: rgba(white, 0.025);
+    border: 1px solid rgba(white, 0.09);
+    border-radius: $bt_radius + $base_padding * 1.5;
+    box-shadow: none;
+    color: rgba(white, 0.90);
+
+    &:hover,
+    &:focus {
+      background-color: rgba(white, 0.045);
+      border-color: rgba(white, 0.13);
+    }
+
+    &:active {
+      background-color: rgba(white, 0.055);
+    }
+
+    &:second-in-stack {
+      background-color: rgba(white, 0.018);
+      border-color: rgba(white, 0.09);
+    }
+
+    &:lower-in-stack {
+      background-color: rgba(white, 0.012);
+      border-color: rgba(white, 0.06);
+    }
+  }
+
+  .message .message-header .message-expand-button,
+  .message .message-header .message-close-button,
+  .message-notification-group .message-collapse-button {
+    background-color: rgba(white, 0.05);
+    border-color: rgba(white, 0.10);
+    color: rgba(white, 0.88);
+  }
+
+  .message .message-header .message-expand-button:hover,
+  .message .message-header .message-close-button:hover,
+  .message-notification-group .message-collapse-button:hover {
+    background-color: rgba(white, 0.10);
+    border-color: rgba(white, 0.16);
+    color: #ffffff;
+  }
+
+  .message .message-header .message-expand-button:active,
+  .message .message-header .message-close-button:active,
+  .message-notification-group .message-collapse-button:active {
+    background-color: rgba(115, 179, 255, 0.24);
+    border-color: rgba(115, 179, 255, 0.42);
+    color: #ffffff;
+  }
+
+  .message .message-box .message-icon.message-themed-icon {
+    background-color: rgba(white, 0.035);
+  }
+}
+
 // URLs in messages
 .url-highlighter {
   link-color: $link_color;

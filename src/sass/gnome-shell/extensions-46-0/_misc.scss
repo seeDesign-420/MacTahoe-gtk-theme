@@ -187,3 +187,43 @@
 .popup-menu-player-icons-icon {
   background: $divider_color !important;
 }
+
+#preview-menu {
+  background-color: transparent;
+  border: 1px solid rgba(white, 0.12);
+  box-shadow: none;
+}
+
+.gsconnect-device-menu {
+  background-color: transparent;
+  border: 1px solid rgba(white, 0.12);
+  box-shadow: none;
+}
+
+.gsconnect-device-menu .popup-menu-item {
+  background-color: transparent;
+}
+
+.gsconnect-device-menu .popup-menu-item:hover,
+.gsconnect-device-menu .popup-menu-item:focus,
+.gsconnect-device-menu .popup-menu-item:selected {
+  background-color: rgba(white, 0.05) !important;
+  color: #ffffff !important;
+}
+
+.popup-menu-container {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.place-menu-item .button {
+  background-color: transparent;
+  border: 1px solid rgba(white, 0.10);
+  box-shadow: none;
+}
+
+.place-menu-item .button:hover,
+.place-menu-item .button:focus,
+.place-menu-item .button:selected {
+  background-color: rgba(white, 0.05);
+}

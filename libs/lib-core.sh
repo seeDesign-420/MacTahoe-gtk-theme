@@ -63,7 +63,7 @@ COLOR_VARIANTS=('Light' 'Dark')
 OPACITY_VARIANTS=('normal' 'solid')
 ALT_VARIANTS=('normal' 'alt')
 THEME_VARIANTS=('default' 'blue' 'purple' 'pink' 'red' 'orange' 'yellow' 'green' 'grey')
-SCHEME_VARIANTS=('standard' 'nord')
+SCHEME_VARIANTS=('standard' 'nord' 'catppuccin')
 ICON_VARIANTS=('apple' 'simple' 'gnome' 'ubuntu' 'tux' 'arch' 'manjaro' 'fedora' 'debian' 'void' 'opensuse' 'popos' 'mxlinux' 'zorin' 'budgie' 'gentoo' 'kali')
 PANEL_OPACITY_VARIANTS=('default' '30' '45' '60' '75')
 PANEL_SIZE_VARIANTS=('default' 'smaller' 'bigger')
@@ -613,9 +613,9 @@ check_param() {
           done
         fi ;;
       -s)
-        for i in {0..1}; do
-          if [[ "${value}" == "${SCHEME_VARIANTS[i]}" ]]; then
-            schemes+=("${SCHEME_VARIANTS[i]}")
+        for scheme_variant in "${SCHEME_VARIANTS[@]}"; do
+          if [[ "${value}" == "${scheme_variant}" ]]; then
+            schemes+=("${scheme_variant}")
             variant_found="true"; break
           fi
         done ;;

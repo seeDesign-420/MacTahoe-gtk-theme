@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 for theme in '' '-blue' '-purple' '-pink' '-red' '-orange' '-yellow' '-green' '-grey'; do
-  for type in '' '-nord'; do
+  for type in '' '-nord' '-catppuccin'; do
     case "$theme" in
       '')
         theme_color='#0860F2'
@@ -32,34 +32,43 @@ for theme in '' '-blue' '-purple' '-pink' '-red' '-orange' '-yellow' '-green' '-
         ;;
     esac
 
-    if [[ "$type" == '-nord' ]]; then
+    if [[ "$type" == '-nord' || "$type" == '-catppuccin' ]]; then
       case "$theme" in
         '')
           theme_color='#5271ad'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#89b4fa'
           ;;
         -blue)
           theme_color='#4c7bd9'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#74c7ec'
           ;;
         -purple)
           theme_color='#b57daa'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#cba6f7'
           ;;
         -pink)
           theme_color='#cd7092'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#f5c2e7'
           ;;
         -red)
           theme_color='#c35b65'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#f38ba8'
           ;;
         -orange)
           theme_color='#d0846c'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#fab387'
           ;;
         -yellow)
           theme_color='#e4b558'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#f9e2af'
           ;;
         -green)
           theme_color='#82ac5d'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#a6e3a1'
           ;;
         -grey)
           theme_color='#8999a9'
+          [[ "$type" == '-catppuccin' ]] && theme_color='#7f849c'
           ;;
       esac
     fi
@@ -73,6 +82,13 @@ for theme in '' '-blue' '-purple' '-pink' '-red' '-orange' '-yellow' '-green' '-
       cp -rf "theme" "theme${theme}"
       sed -i "s/#0860f2/${theme_color}/g" "theme${theme}"/*.svg
     fi
+  done
+done
+
+for color in 'Dark' 'Light'; do
+  for type in '-nord' '-catppuccin'; do
+    rm -rf "assets-${color}${type}"
+    cp -rf "assets-${color}" "assets-${color}${type}"
   done
 done
 

@@ -303,3 +303,37 @@ $toggle_checked_bg_color: rgba(white, 0.15);
 .nm-network-item {
   .wireless-secure-icon { icon-size: 0.5 * $base_icon_size; }
 }
+
+.quick-settings {
+  background-color: transparent;
+  border: 1px solid rgba(white, 0.18);
+  border-image: none;
+  box-shadow: none;
+}
+
+.quick-toggle,
+.quick-menu-toggle {
+  box-shadow: inset 0 0 4px rgba(white, 0.24) !important;
+}
+
+.quick-toggle-menu {
+  background-color: transparent !important;
+  border: 1px solid rgba(white, 0.12);
+  box-shadow: none;
+}
+
+.quick-toggle-menu .popup-menu-item {
+  background-color: transparent;
+}
+
+.quick-toggle-menu .popup-menu-item:hover,
+.quick-toggle-menu .popup-menu-item:focus,
+.quick-toggle-menu .popup-menu-item:selected {
+  background-color: rgba(white, 0.05) !important;
+  color: #ffffff !important;
+}
+
+.quick-toggle-menu .popup-menu-item:active {
+  background-color: rgba(white, 0.08) !important;
+  color: #ffffff !important;
+}

@@ -51,3 +51,14 @@
 .candidate-page-button-previous,
 .candidate-page-button-next { border-radius: $bt_radius;  }
 .candidate-page-button-icon { icon-size: 1em; }
+
+.candidate-popup-boxpointer {
+  -arrow-base: 0px;
+  -arrow-rise: 0px;
+}
+
+.candidate-popup-content {
+  background-color: transparent;
+  border: 1px solid if($variant == 'light', rgba(black, 0.08), rgba(white, 0.12));
+  box-shadow: none;
+}

@@ -1,6 +1,10 @@
 /* Popovers/Menus */
 
 $popop_menuitem_radius: $po_radius - $base_padding - if($variant=='light', 0, 2px); // radius of the menu item, used in popovers
+$shell_popup_border: if($variant == 'light', rgba(black, 0.08), rgba(white, 0.12));
+$shell_popup_hover: if($variant == 'light', rgba(black, 0.04), rgba(white, 0.05));
+$shell_popup_active: if($variant == 'light', rgba(black, 0.06), rgba(white, 0.08));
+$shell_popup_checked: if($variant == 'light', rgba(black, 0.03), rgba(white, 0.04));
 
 //.the popover itself
 .popup-menu-boxpointer {
@@ -233,7 +237,8 @@ $popop_menuitem_radius: $po_radius - $base_padding - if($variant=='light', 0, 2p
 
 // right-click app menu
 .app-menu,
-.app-well-menu {
+.app-well-menu,
+.dock-app-menu {
   max-width: 27.25em;
 }
 
@@ -243,4 +248,81 @@ $popop_menuitem_radius: $po_radius - $base_padding - if($variant=='light', 0, 2p
     spacing: $base_spacing;
     &:ltr, &:rtl { padding: 0 $base_padding * 2; }
   }
+}
+
+.popup-menu-boxpointer {
+  -arrow-base: 0px;
+  -arrow-rise: 0px;
+}
+
+.popup-menu-content,
+.popup-menu.panel-menu > .popup-menu-content {
+  background-color: transparent;
+  border: 1px solid $shell_popup_border;
+  box-shadow: none;
+}
+
+.popup-menu.panel-menu > .popup-menu-content {
+  border-radius: $po_radius + $base_padding;
+}
+
+.popup-menu-item {
+  background-color: transparent;
+
+  &:focus, &:hover, &:selected {
+    background-color: $shell_popup_hover;
+    color: $selected_fg_color !important;
+  }
+
+  &:active, &.selected:active {
+    background-color: $shell_popup_active;
+    color: $selected_fg_color !important;
+  }
+
+  &:checked {
+    background-color: $shell_popup_checked !important;
+
+    &:focus, &:hover, &:selected {
+      background-color: $shell_popup_hover !important;
+    }
+  }
+}
+
+.popup-sub-menu {
+  background-color: transparent !important;
+  box-shadow: none;
+  border: none;
+
+  .popup-menu-item {
+    background-color: transparent !important;
+  }
+}
+
+.popup-menu.panel-menu > .popup-menu-content,
+.background-menu .popup-menu-content,
+.aggregate-menu .popup-menu-content,
+.dock-app-menu .popup-menu-content,
+.app-menu .popup-menu-content,
+.app-well-menu .popup-menu-content {
+  background-color: transparent;
+  border: 1px solid $shell_popup_border;
+  box-shadow: none;
+}
+
+.background-menu .popup-sub-menu,
+.aggregate-menu .popup-sub-menu,
+.dock-app-menu .popup-sub-menu,
+.app-menu .popup-sub-menu,
+.app-well-menu .popup-sub-menu {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+
+.dock-app-menu .popup-menu-ornament,
+.dock-app-menu .popup-sub-menu .popup-menu-ornament {
+  width: 0 !important;
+}
+
+.popup-separator-menu-item .popup-separator-menu-item-separator {
+  background-color: if($variant == 'light', rgba(black, 0.08), rgba(white, 0.08));
 }

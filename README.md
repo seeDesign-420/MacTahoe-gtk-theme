@@ -89,7 +89,7 @@ OPTIONS:
   -t, --theme [default|blue|purple|pink|red|orange|yellow|green|grey|all]
    Set theme accent color. Repeatable. Default is Tahoe-like theme
 
-  -s, --scheme [standard|nord]
+  -s, --scheme [standard|nord|catppuccin]
    Set theme colorscheme style. Repeatable. Default is 'standard'
 
   -b, --blur 
@@ -175,6 +175,7 @@ Example:
 ./install.sh -t red            # install red theme accent only
 ./install.sh -t red -t green   # install red and green theme accents
 ./install.sh -t all            # install all available theme accents
+./install.sh -s catppuccin -t all  # install the Catppuccin Mocha shell variant with every accent
 ```
 
 ## <p align="center"> <b> Blur my shell version </b> </p>
@@ -246,7 +247,7 @@ Usage:  `./tweaks.sh [OPTIONS...]`
 
       10. -t, --theme [default|blue|purple|pink|red|orange|yellow|green|grey]   Set 'MacTahoe' GDM theme accent color Default is 'blue'
 
-      11. -s, --scheme [standard|nord]   Set 'MacTahoe' GDM theme colorscheme style Default is 'standard'
+     11. -s, --scheme [standard|nord|catppuccin]   Set 'MacTahoe' GDM theme colorscheme style Default is 'standard'
 
    
  Tweaks for firefox. options
@@ -271,7 +272,7 @@ Usage:  `./tweaks.sh [OPTIONS...]`
 
       3.  -t, --theme [default|blue|purple|pink|red|orange|yellow|green|grey]   Set 'MacTahoe' flatpak theme accent color Default is 'blue'
 
-      4.  -s, --scheme [standard|nord]   Set 'MacTahoe' flatpak theme colorscheme style Default is 'standard'
+     4.  -s, --scheme [standard|nord|catppuccin]   Set 'MacTahoe' flatpak theme colorscheme style Default is 'standard'
 
   -d, --dash-to-dock 
    Fixed Dash to Dock theme issue. 

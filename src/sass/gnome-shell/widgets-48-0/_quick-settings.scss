@@ -375,3 +375,38 @@ $toggle_shadow: if($trans == 'true', inset 0 0 4px rgba(white, 0.35), 0 5px 10px
 
   &.popup-inactive-menu-item { color: $toggle_fg_color; }
 }
+
+.quick-settings {
+  background-color: transparent;
+  border: 1px solid rgba(white, 0.18);
+  border-image: none;
+  box-shadow: none;
+}
+
+.quick-toggle-menu {
+  background-color: transparent !important;
+  border: 1px solid rgba(white, 0.12);
+  box-shadow: none;
+}
+
+.quick-toggle-menu .popup-menu-item {
+  background-color: transparent;
+}
+
+.quick-toggle-menu .popup-menu-item:hover,
+.quick-toggle-menu .popup-menu-item:focus,
+.quick-toggle-menu .popup-menu-item:selected {
+  background-color: rgba(white, 0.05) !important;
+  color: #ffffff !important;
+}
+
+.quick-toggle-menu .popup-menu-item:active {
+  background-color: rgba(white, 0.08) !important;
+  color: #ffffff !important;
+}
+
+.quick-settings-system-item .icon-button,
+.quick-settings .button,
+.quick-settings .icon-button {
+  box-shadow: inset 0 0 4px rgba(white, 0.24) !important;
+}

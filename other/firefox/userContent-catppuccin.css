@@ -1,0 +1,7 @@
+@import "MacTahoe/colors/light-catppuccin.css";
+@import "MacTahoe/colors/dark-catppuccin.css";
+
+@import "MacTahoe/pages/common.css";
+@import "MacTahoe/pages/newtab.css";
+@import "MacTahoe/pages/reader.css";
+@import "MacTahoe/pages/privatebrowsing.css";

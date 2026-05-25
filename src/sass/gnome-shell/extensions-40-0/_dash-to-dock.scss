@@ -278,3 +278,63 @@
   border-right-width: 1px;
   margin: 32px 0;
 }
+
+#dashtodockWindowScrollview,
+#dashtodockWindowList {
+  background-color: transparent;
+}
+
+.dashtodock-app-well-preview-menu-item,
+.dashtodock-app-well-preview-menu-item:hover,
+.dashtodock-app-well-preview-menu-item:focus,
+.dashtodock-app-well-preview-menu-item:selected,
+.dashtodock-app-well-preview-menu-item.dashtodock-preview-current {
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.dashtodock-app-well-preview-menu-item:hover,
+.dashtodock-app-well-preview-menu-item:focus,
+.dashtodock-app-well-preview-menu-item:selected,
+.dashtodock-app-well-preview-menu-item.dashtodock-preview-current {
+  background-color: rgba(white, 0.038);
+  border-color: rgba(white, 0.085);
+}
+
+.dashtodock-preview-overlay,
+.dashtodock-preview-box,
+.dashtodock-preview-card,
+.dashtodock-preview-clone-bin {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.dashtodock-preview-label-bin {
+  background-color: rgba(white, 0.02);
+  border: none;
+  border-radius: 12px;
+}
+
+.dashtodock-preview-title {
+  color: rgba(white, 0.94);
+}
+
+.dashtodock-app-well-preview-menu-item .window-close {
+  background-color: rgba(18, 20, 26, 0.68);
+  border: 1px solid rgba(white, 0.08);
+  box-shadow: none;
+  color: rgba(white, 0.92);
+}
+
+.dashtodock-app-well-preview-menu-item .window-close:hover,
+.dashtodock-app-well-preview-menu-item .window-close:focus,
+.dashtodock-app-well-preview-menu-item .window-close:active,
+.dashtodock-app-well-preview-menu-item .window-close:selected,
+.dashtodock-app-well-preview-menu-item .window-close:checked {
+  background-color: rgba(24, 27, 34, 0.80);
+  border-color: rgba(white, 0.10);
+  box-shadow: none;
+}

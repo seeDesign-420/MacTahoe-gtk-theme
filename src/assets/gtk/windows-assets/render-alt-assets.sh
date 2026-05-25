@@ -74,4 +74,42 @@ fi
 
 done
 done
+
+## alt catppuccin titlebutton
+
+CATPPUCCIN_SRC_FILE="windows-catppuccin-assets.svg"
+CATPPUCCIN_ASSETS_DIR="titlebutton-alt-catppuccin"
+
+if [ -f $CATPPUCCIN_SRC_FILE ]; then
+mkdir -p $CATPPUCCIN_ASSETS_DIR
+
+for i in `cat $INDEX` ; do
+for d in '' '-dark' ; do
+
+if [ -f $CATPPUCCIN_ASSETS_DIR/$i$d.png ]; then
+    echo $CATPPUCCIN_ASSETS_DIR/$i$d.png exists.
+else
+    echo
+    echo Rendering $CATPPUCCIN_ASSETS_DIR/$i$d.png
+    $INKSCAPE --export-id=$i$d \
+              --export-id-only \
+              --export-png=$CATPPUCCIN_ASSETS_DIR/$i$d.png $CATPPUCCIN_SRC_FILE >/dev/null \
+    && $OPTIPNG -o7 --quiet $CATPPUCCIN_ASSETS_DIR/$i$d.png 
+fi
+
+if [ -f $CATPPUCCIN_ASSETS_DIR/$i$d@2.png ]; then
+    echo $CATPPUCCIN_ASSETS_DIR/$i$d@2.png exists.
+else
+    echo
+    echo Rendering $CATPPUCCIN_ASSETS_DIR/$i$d@2.png
+    $INKSCAPE --export-id=$i$d \
+              --export-dpi=192 \
+              --export-id-only \
+              --export-png=$CATPPUCCIN_ASSETS_DIR/$i$d@2.png $CATPPUCCIN_SRC_FILE >/dev/null \
+    && $OPTIPNG -o7 --quiet $CATPPUCCIN_ASSETS_DIR/$i$d@2.png 
+fi
+
+done
+done
+fi
 exit 0

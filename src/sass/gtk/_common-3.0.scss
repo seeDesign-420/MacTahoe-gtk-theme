@@ -1944,6 +1944,8 @@ $pathbar_button_checked_bg: if($variant == 'light', #808080, #b8b8b8);
 
 @if $scheme == 'nord' {
   $pathbar_button_checked_bg: if($variant == 'light', #6b7894, #adb4c3);
+} @else if $scheme == 'catppuccin' {
+  $pathbar_button_checked_bg: if($variant == 'light', #6b7894, #45475a);
 }
 
 .path-bar button {

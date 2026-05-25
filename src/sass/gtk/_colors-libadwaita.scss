@@ -233,14 +233,14 @@ $dark_5: #000000;
 @if $gnome_version == 'new' and $accent_type != 'fixed' {
   :root {
     --accent-blue: #{$theme_color_default};
-    --accent-teal: #2190a4;
+    --accent-teal: #{scheme_color(#2190a4, #2190a4, #94e2d5)};
     --accent-green: #{$theme_color_green};
     --accent-yellow: #{$theme_color_yellow};
     --accent-orange: #{$theme_color_orange};
     --accent-red: #{$theme_color_red};
     --accent-pink: #{$theme_color_pink};
     --accent-purple: #{$theme_color_purple};
-    --accent-slate: #6f8396;
+    --accent-slate: #{scheme_color(#6f8396, #6f8396, #7f849c)};
 
     --accent-color: @accent_bg_color;
     --accent-bg-color: @accent_bg_color;
