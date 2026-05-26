@@ -410,3 +410,41 @@ $toggle_shadow: if($trans == 'true', inset 0 0 4px rgba(white, 0.35), 0 5px 10px
 .quick-settings .icon-button {
   box-shadow: inset 0 0 4px rgba(white, 0.24) !important;
 }
+
+@if $scheme == 'catppuccin' {
+  .quick-toggle:checked {
+    background-color: $popover_bg_color !important;
+    color: $primary_color;
+
+    &:hover {
+      color: $primary_color;
+      @if $shell_version == 'old' {
+        background-color: mix($text_color, $popover_bg_color, 6%) !important;
+      } @else {
+        background-color: st-mix($text_color, $popover_bg_color, 6%) !important;
+      }
+    }
+
+    &:active {
+      color: $primary_color;
+      @if $shell_version == 'old' {
+        background-color: mix($text_color, $popover_bg_color, 15%) !important;
+      } @else {
+        background-color: st-mix($text_color, $popover_bg_color, 15%) !important;
+      }
+    }
+  }
+
+  .quick-toggle-has-menu {
+    &:checked {
+      background-color: $popover_bg_color !important;
+    }
+
+    .quick-toggle {
+      &:checked .quick-toggle-icon {
+        background-color: $popover_bg_color;
+        color: $primary_color;
+      }
+    }
+  }
+}
