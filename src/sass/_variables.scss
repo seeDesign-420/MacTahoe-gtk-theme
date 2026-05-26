@@ -52,13 +52,13 @@ $base_spacing: if($laptop == 'false', 6px, 4px);
 
 // radiuses
 $circular_radius: 9999px;
-$bt_radius: if($laptop == 'false', 6px, 6px);
-$bd_radius: if($laptop == 'false', 10px, 8px);
-$wm_radius: if($laptop == 'false', 26px, 24px);
-$mn_radius: if($laptop == 'false', 14px, 12px);
-$po_radius: if($laptop == 'false', 16px, 14px);
-$dash_radius: if($laptop == 'false', 24px, 18px);
-$base_border_radius: if($laptop == 'false', 8px, 8px);
+$bt_radius: if($laptop == 'false', 7px, 7px);
+$bd_radius: if($laptop == 'false', 12px, 9px);
+$wm_radius: if($laptop == 'false', 30px, 28px);
+$mn_radius: if($laptop == 'false', 16px, 14px);
+$po_radius: if($laptop == 'false', 18px, 16px);
+$dash_radius: if($laptop == 'false', 28px, 21px);
+$base_border_radius: if($laptop == 'false', 9px, 9px);
 $modal_radius: $base_border_radius * 2;
 $maximized_radius: 0;
 

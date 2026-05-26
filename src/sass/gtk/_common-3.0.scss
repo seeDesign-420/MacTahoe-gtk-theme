@@ -2392,7 +2392,7 @@ cursor-handle {
   background-color: transparent;
   border: none;
   transition: all 150ms ease-out;
-  border-radius: 14px;
+  border-radius: $mn_radius;
   padding: $container_padding - 4px $container_padding + 4px;
   margin: 0;
   box-shadow: none;
@@ -2414,7 +2414,7 @@ notebook {
 
   &.frame {
     border: 1px solid $solid_borders_color;
-    border-radius: 16px + $container_padding / 2;
+    border-radius: $po_radius + $container_padding / 2;
 
     > stack > .frame {
       border: none;
@@ -2423,7 +2423,7 @@ notebook {
 
   > stack:not(:only-child) { // the :not(:only-child) is for "hidden" notebooks
     background-color: transparent;
-    border-radius: 16px + $container_padding / 2;
+    border-radius: $po_radius + $container_padding / 2;
   }
 
   .background.csd > &:not(.frame),
@@ -2437,7 +2437,7 @@ notebook {
     margin: $container_padding / 2;
     padding: 2px;
     background-color: $fill_color;
-    border-radius: 16px;
+    border-radius: $po_radius;
 
     button.image-button {
       @extend %flat_button;

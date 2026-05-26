@@ -2,9 +2,6 @@
 
 $popop_menuitem_radius: $po_radius - $base_padding - if($variant=='light', 0, 2px); // radius of the menu item, used in popovers
 $shell_popup_border: if($variant == 'light', rgba(black, 0.08), rgba(white, 0.12));
-$shell_popup_hover: if($variant == 'light', rgba(black, 0.04), rgba(white, 0.05));
-$shell_popup_active: if($variant == 'light', rgba(black, 0.06), rgba(white, 0.08));
-$shell_popup_checked: if($variant == 'light', rgba(black, 0.03), rgba(white, 0.04));
 
 //.the popover itself
 .popup-menu-boxpointer {
@@ -226,6 +223,25 @@ $shell_popup_checked: if($variant == 'light', rgba(black, 0.03), rgba(white, 0.0
   min-width: 21em;
 
   // lock screen, shutdown, etc. buttons
+  .popup-menu-content > .popup-menu-item > :first-child {
+    min-width: 2.6em;
+    min-height: 2.6em;
+    padding: $base_padding * 1.5;
+    border-radius: $circular_radius;
+    background-color: rgba(white, 0.1);
+    box-shadow: inset 0 0 0 1px rgba(white, 0.14);
+
+    &:hover {
+      background-color: rgba(white, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(white, 0.2);
+    }
+
+    &:active {
+      background-color: rgba(white, 0.22);
+      box-shadow: inset 0 0 0 1px rgba(white, 0.24);
+    }
+  }
+
   .popup-menu-icon {
     padding: 0 !important;
     -st-icon-style: symbolic;
@@ -270,20 +286,26 @@ $shell_popup_checked: if($variant == 'light', rgba(black, 0.03), rgba(white, 0.0
   background-color: transparent;
 
   &:focus, &:hover, &:selected {
-    background-color: $shell_popup_hover;
+    background-color: $selected_bg_color;
     color: $selected_fg_color !important;
   }
 
   &:active, &.selected:active {
-    background-color: $shell_popup_active;
+    @if $shell_version == 'old' {
+      background-color: mix($fg_color, $selected_bg_color, 5%);
+    } @else {
+      background-color: st-mix($fg_color, $selected_bg_color, 5%);
+    }
     color: $selected_fg_color !important;
   }
 
   &:checked {
-    background-color: $shell_popup_checked !important;
+    color: $selected_fg_color !important;
+    background-color: $selected_bg_color !important;
 
     &:focus, &:hover, &:selected {
-      background-color: $shell_popup_hover !important;
+      color: $selected_fg_color !important;
+      background-color: $selected_bg_color !important;
     }
   }
 }

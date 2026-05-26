@@ -143,6 +143,10 @@ $dark_5: #000000;
 @define-color dark_4 #{$dark_4};
 @define-color dark_5 #{$dark_5};
 
+* {
+  border-radius: 20px;
+}
+
 /* GTK NAMED COLORS
    ----------------
    use responsibly! */

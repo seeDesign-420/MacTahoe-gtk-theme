@@ -788,7 +788,7 @@ button {
   min-height: $menuitem_size - 4px;
   min-width: $menuitem_size - 4px;
   transition: $button_transition;
-  border-radius: $bt_radius;
+  border-radius: $circular_radius;
   padding: 2px $container_padding;
   background-clip: padding-box;
   @extend %button_basic;
@@ -2979,7 +2979,7 @@ popover.menu {
   background-color: transparent;
   border: none;
   transition: all 150ms ease-out;
-  border-radius: 14px;
+  border-radius: $mn_radius;
   padding: $container_padding - 4px $container_padding + 4px;
   margin: 0;
   box-shadow: none;
@@ -3006,12 +3006,12 @@ notebook {
 
   &.frame {
     border: 1px solid $solid_borders_color;
-    border-radius: 16px + $container_padding / 2;
+    border-radius: $po_radius + $container_padding / 2;
   }
 
   > stack:not(:only-child) { // the :not(:only-child) is for "hidden" notebooks
     background-color: $base_color;
-    border-radius: 16px + $container_padding / 2;
+    border-radius: $po_radius + $container_padding / 2;
   }
 
   > header {
@@ -3020,7 +3020,7 @@ notebook {
     margin: $container_padding / 2;
     padding: 2px;
     background-color: $fill_color;
-    border-radius: 16px;
+    border-radius: $po_radius;
 
     button.flat.toggle.popup {
       min-width: $medium_size;

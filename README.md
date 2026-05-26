@@ -126,7 +126,7 @@ OPTIONS:
      Set gnome-shell show apps button style to normal. Default is macOS icon
 
   --round, --roundedmaxwindow 
-   Set maximized window to rounded. Default is square
+   Set maximized window to rounded. Default is rounded
 
   --darker, --darkercolor 
    Install darker 'MacTahoe' dark themes. 

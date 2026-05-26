@@ -392,6 +392,7 @@ install_shelly() {
   else
     cp -r "${THEME_SRC_DIR}/main/gnome-shell/pad-osd.css"                                     "${TARGET_DIR}"
   fi
+  rm -f "${THEME_SRC_DIR}/main/gnome-shell/shell-base-temp.scss"
   sassc ${SASSC_OPT} "${THEME_SRC_DIR}/main/gnome-shell/gnome-shell${color}.scss"             "${TARGET_DIR}/gnome-shell.css"
 
   cp -r "${THEME_SRC_DIR}/assets/gnome-shell/common-assets/"*                                 "${TARGET_DIR}/assets"
@@ -989,14 +990,21 @@ libadwaita_base() {
 }
 
 shell_base() {
-  cp -rf "${THEME_SRC_DIR}/main/gnome-shell/_shell-base"{".scss","-temp.scss"}
+  local shell_dir="${THEME_SRC_DIR}/main/gnome-shell"
+  local shell_base_file="${shell_dir}/_shell-base.scss"
+  local shell_temp_file="${shell_dir}/_shell-base-temp.scss"
+  local stale_shell_temp_file="${shell_dir}/shell-base-temp.scss"
 
-  sed $SED_OPT "/\widgets/s/46-0/$GNOME_VERSION/"                               "${THEME_SRC_DIR}/main/gnome-shell/_shell-base-temp.scss"
+  # Keep a single canonical temp file for @import 'shell-base-temp'.
+  rm -f "${stale_shell_temp_file}"
+  cp -rf "${shell_base_file}" "${shell_temp_file}"
+
+  sed $SED_OPT "/\widgets/s/46-0/$GNOME_VERSION/"                               "${shell_temp_file}"
 
   if [[ "${GNOME_VERSION}" == '3-28' ]]; then
-    sed $SED_OPT "/\extensions/s/46-0/3-28/"                                    "${THEME_SRC_DIR}/main/gnome-shell/_shell-base-temp.scss"
+    sed $SED_OPT "/\extensions/s/46-0/3-28/"                                    "${shell_temp_file}"
   elif [[ "${GNOME_VERSION}" -gt '3-28' && "${GNOME_VERSION}" -lt '46-0' ]]; then
-    sed $SED_OPT "/\extensions/s/46-0/40-0/"                                    "${THEME_SRC_DIR}/main/gnome-shell/_shell-base-temp.scss"
+    sed $SED_OPT "/\extensions/s/46-0/40-0/"                                    "${shell_temp_file}"
   fi
 }
 

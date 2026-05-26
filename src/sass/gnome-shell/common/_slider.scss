@@ -8,7 +8,7 @@ $barlevel_boder_color: transparent;
 .slider {
   height: 8px;
   color: $slider_color;
-  border-radius: 16px;
+  border-radius: $po_radius;
 
   -slider-height: 8px;
   -slider-background-color: $barlevel_bg_color; //background of the trough

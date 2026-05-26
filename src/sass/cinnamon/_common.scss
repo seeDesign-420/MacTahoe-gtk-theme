@@ -1172,7 +1172,7 @@ StScrollBar {
 
 .thumbnail-scroll-gradient-left {
   background-color: rgba(0, 0, 0, 0);
-  border-radius: 24px;
+  border-radius: $dash_radius;
   border-radius-topright: 0px;
   border-radius-bottomright: 0px;
   width: 60px;
@@ -1180,7 +1180,7 @@ StScrollBar {
 
 .thumbnail-scroll-gradient-right {
   background-color: rgba(0, 0, 0, 0);
-  border-radius: 24px;
+  border-radius: $dash_radius;
   border-radius-topleft: 0px;
   border-radius-bottomleft: 0px;
   width: 60px;

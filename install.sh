@@ -44,7 +44,7 @@ usage() {
   helpify "   5. -ns, -noshadow"          ""                                                  "    Remove quickmenu shadow"                       ""
   helpify "   6. normal, -normal"         ""                                                  "    Set gnome-shell show apps button style to normal" "Default is macOS icon"
 
-  helpify "--round, --roundedmaxwindow"   ""                                                  "  Set maximized window to rounded"                 "Default is square"
+  helpify "--round, --roundedmaxwindow"   ""                                                  "  Set maximized window to rounded"                 "Default is rounded"
   helpify "--darker, --darkercolor"       ""                                                  "  Install darker '${THEME_NAME}' dark themes"      ""
   helpify "--silent-mode"                 ""                                                  "  Meant for developers: ignore any confirm prompt and params become more strict" ""
   helpify "-r, --remove, -u, --uninstall" ""                                                  "  Remove all installed ${THEME_NAME} themes"       ""
