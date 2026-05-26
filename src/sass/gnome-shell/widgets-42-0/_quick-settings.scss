@@ -339,6 +339,20 @@ $toggle_checked_bg_color: rgba(white, 0.15);
 }
 
 @if $scheme == 'catppuccin' {
+  .quick-settings-system-item .icon-button,
+  .quick-menu-toggle .quick-toggle .quick-toggle-icon {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .quick-settings-system-item .icon-button:hover,
+  .quick-settings-system-item .icon-button:active,
+  .quick-menu-toggle .quick-toggle:hover .quick-toggle-icon,
+  .quick-menu-toggle .quick-toggle:active .quick-toggle-icon,
+  .quick-menu-toggle .quick-toggle:checked .quick-toggle-icon {
+    background-color: transparent !important;
+  }
+
   .quick-toggle:checked {
     background-color: $popover_bg_color !important;
     color: $primary_color;
@@ -369,7 +383,6 @@ $toggle_checked_bg_color: rgba(white, 0.15);
 
     .quick-toggle {
       &:checked .quick-toggle-icon {
-        background-color: $popover_bg_color;
         color: $primary_color;
       }
     }

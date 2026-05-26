@@ -403,6 +403,20 @@ $toggle_shadow: if($trans =='true', inset 0 0 4px rgba(white, 0.35), 0 5px 10px 
 }
 
 @if $scheme == 'catppuccin' {
+  .quick-settings-system-item .icon-button,
+  .quick-toggle-has-menu .quick-toggle .quick-toggle-icon {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .quick-settings-system-item .icon-button:hover,
+  .quick-settings-system-item .icon-button:active,
+  .quick-toggle-has-menu .quick-toggle:hover .quick-toggle-icon,
+  .quick-toggle-has-menu .quick-toggle:active .quick-toggle-icon,
+  .quick-toggle-has-menu .quick-toggle:checked .quick-toggle-icon {
+    background-color: transparent !important;
+  }
+
   .quick-toggle:checked {
     background-color: $popover_bg_color !important;
     color: $primary_color;
@@ -433,7 +447,6 @@ $toggle_shadow: if($trans =='true', inset 0 0 4px rgba(white, 0.35), 0 5px 10px 
 
     .quick-toggle {
       &:checked .quick-toggle-icon {
-        background-color: $popover_bg_color;
         color: $primary_color;
       }
     }
